@@ -10,8 +10,8 @@ import {
 } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Loader2 } from "lucide-react";
-// Fixed the import path to match your src structure
-import Player from "@/components/world/Player";
+// Using a relative path to ensure the build never misses it
+import Player from "../../../components/world/Player";
 
 function WorldFloor() {
   return (
@@ -21,6 +21,18 @@ function WorldFloor() {
         <meshStandardMaterial color="#1c1917" /> 
       </mesh>
     </RigidBody>
+  );
+}
+
+// Separated Loading UI to keep the Main component clean
+function LoadingUI() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
+      <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
+      <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
+        Manifesting Environment...
+      </span>
+    </div>
   );
 }
 
@@ -51,7 +63,7 @@ export default function MainWorldPage() {
           <ambientLight intensity={0.4} />
           <pointLight position={[10, 10, 10]} castShadow />
 
-          {/* Fixed: Only ONE Physics wrapper now */}
+          {/* Physics Wrapper starts here */}
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
             <Player /> 
@@ -68,22 +80,8 @@ export default function MainWorldPage() {
         </Suspense>
       </Canvas>
 
-      {/* Loading Overlay */}
-      <Suspense fallback={null}>
-        <LoadingUI />
-      </Suspense>
-    </div>
-  );
-}
-
-// Separated Loading UI for cleaner code
-function LoadingUI() {
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
-      <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
-      <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
-        Manifesting Environment...
-      </span>
+      {/* Loading Screen Overlay */}
+      <LoadingUI />
     </div>
   );
 }
