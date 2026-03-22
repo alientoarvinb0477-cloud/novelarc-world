@@ -28,7 +28,7 @@ export default function Player() {
     const position = rb.current.translation();
     
     // 2. Sync the camera (Eye-level)
-    camera.position.set(position.x, position.y + 1.75, position.z);
+    camera.position.set(position.x, position.y + 2.5, position.z);
 
     // 3. Handle Movement
     const { forward, backward, left, right, jump } = getKeys();
