@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowRight, Globe, Zap } from 'lucide-react';
-import Crosshair from "@/components/world/Crosshair";
+import Crosshair from "../components/world/Crosshair";
 
 export default function LandingPage() {
   return (
