@@ -70,7 +70,7 @@ export default function Player() {
       friction={0} // Prevents sticking to walls
     >
       {/* Explicit Capsule Collider - This is more stable than the 'colliders' prop */}
-      <CapsuleCollider args={[0.75, 0.5]} /> 
+      <CapsuleCollider args={[1.5, 1.0]} /> 
       
       {/* Visual helper (invisible in production) */}
       <mesh castShadow>
