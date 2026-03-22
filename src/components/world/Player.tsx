@@ -64,7 +64,7 @@ export default function Player() {
     <RigidBody
       ref={rb}
       colliders={false} // We define the collider explicitly below to avoid the 'shape' error
-      position={[0, 5, 0]}
+      position={[0, 15, 0]}
       enabledRotations={[false, false, false]}
       name="player"
       friction={0} // Prevents sticking to walls
