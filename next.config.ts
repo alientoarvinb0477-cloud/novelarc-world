@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  // This tells Next.js 16 to use Webpack instead of Turbopack for the build
-  // which is necessary for certain 3D/Physics experiments.
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
   webpack: (config) => {
     config.experiments = {
       ...config.experiments,
@@ -12,13 +11,9 @@ const nextConfig = {
     };
     return config;
   },
-  // We silence the Turbopack warning by explicitly opting into Webpack
-  // since Rapier physics currently prefers it.
-  experimental: {
-    turbo: {
-       // Leave empty to signal we are handling config elsewhere
-    }
-  }
+  // This explicitly tells Next.js we are okay with using Webpack
+  // and silences the Turbopack requirement.
+  experimental: {} 
 };
 
 export default nextConfig;
