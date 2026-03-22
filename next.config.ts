@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
     return config;
   },
   eslint: {
-    // This is the "Safety Switch" that ignores those 'Let's' typos
+    // This allows the build to finish even with the 'Let's' typo
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // This ignores the 'state is defined' warning
+    // This allows the build to finish even with the 'state' warning
     ignoreBuildErrors: true,
   },
 };
