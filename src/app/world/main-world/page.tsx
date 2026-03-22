@@ -79,13 +79,6 @@ export default function MainWorldPage() {
               
               <Player /> 
               
-              {/* Keep the orange box for reference */}
-              <RigidBody colliders="cuboid">
-                <mesh position={[0, 1, -5]} castShadow>
-                  <boxGeometry args={[2, 2, 2]} />
-                  <meshStandardMaterial color="orange" />
-                </mesh>
-              </RigidBody>
             </Physics>
 
             <PointerLockControls />
