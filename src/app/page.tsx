@@ -8,6 +8,10 @@ export default function LandingPage() {
   return (
     <main className="h-screen flex flex-col items-center justify-center bg-[#0a0a0a] text-stone-100 px-6 overflow-hidden relative">
       
+      {/* ─── UI ELEMENTS ─── */}
+      {/* This places the crosshair in the center of the landing page */}
+      <Crosshair />
+      
       {/* ─── AMBIENT BACKGROUND ─── */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-orange-900/20 via-black to-black -z-10" />
       
