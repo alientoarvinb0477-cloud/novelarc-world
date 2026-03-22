@@ -13,6 +13,7 @@ import {
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
 
+// Keyboard mapping for the Player controller
 const keyMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -22,7 +23,7 @@ const keyMap = [
 ];
 
 function WorldFloor() {
-  const { scene } = useGLTF("/floor.glb"); //
+  const { scene } = useGLTF("/floor.glb");
   return (
     <RigidBody type="fixed" colliders="trimesh">
       <primitive object={scene} />
@@ -31,19 +32,22 @@ function WorldFloor() {
 }
 
 export default function MainWorldPage() {
-  // Define the size of your floor. If your GLB is 100x100 units, use 50 here.
-  const mapSize = 50; 
+  // We set the boundary to match the sky distance (450,000 units)
+  const mapSize = 450000; 
+  const wallHeight = 1000;
 
   return (
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
         <Canvas shadows>
           <Suspense fallback={null}>
-            {/* Increase 'far' so the floor and sky don't clip away */}
-            <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={10000} />
+            {/* 'far' is set to 1,000,000 so the sky/floor doesn't vanish in the distance */}
+            <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
             
-            {/* Push the sky out to the horizon */}
-            <Sky distance={450000} sunPosition={[100, 20, 100]} />
+            {/* Sky matches the mapSize boundary */}
+            <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
+            
+            {/* background={false} fixes the 'blurry view' issue */}
             <Environment preset="city" background={false} />
             
             <ambientLight intensity={0.4} />
@@ -53,16 +57,16 @@ export default function MainWorldPage() {
               <WorldFloor />
               <Player />
 
-              {/* --- INVISIBLE BARRIERS --- */}
+              {/* --- MASSIVE INVISIBLE BARRIERS --- */}
               <RigidBody type="fixed">
                 {/* North Wall */}
-                <CuboidCollider args={[mapSize, 10, 1]} position={[0, 5, -mapSize]} />
+                <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, -mapSize]} />
                 {/* South Wall */}
-                <CuboidCollider args={[mapSize, 10, 1]} position={[0, 5, mapSize]} />
+                <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, mapSize]} />
                 {/* East Wall */}
-                <CuboidCollider args={[1, 10, mapSize]} position={[mapSize, 5, 0]} />
+                <CuboidCollider args={[10, wallHeight, mapSize]} position={[mapSize, wallHeight / 2, 0]} />
                 {/* West Wall */}
-                <CuboidCollider args={[1, 10, mapSize]} position={[-mapSize, 5, 0]} />
+                <CuboidCollider args={[10, wallHeight, mapSize]} position={[-mapSize, wallHeight / 2, 0]} />
               </RigidBody>
             </Physics>
 
@@ -74,4 +78,5 @@ export default function MainWorldPage() {
   );
 }
 
-useGLTF.preload("/floor.glb"); //
+// Preload to prevent 'Application Error' popups during initial load
+useGLTF.preload("/floor.glb");
