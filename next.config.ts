@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 1. This handles your 3D Physics/Rapier experiments
+  // This is required for your @react-three/rapier physics engine
   webpack: (config) => {
     config.experiments = {
       ...config.experiments,
@@ -11,15 +11,12 @@ const nextConfig: NextConfig = {
     return config;
   },
   
-  // 2. This silences the Turbopack error by providing an empty config
-  experimental: {
-    turbo: {}
-  },
-
-  // 3. Next.js 16 moved these inside the 'typescript' block for security
+  // This tells Next.js 16 to skip the strict type checks so it can finish the build
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
+
+  // We are removing the explicit ESLint and Turbo keys to stop the 'Unrecognized key' warnings
 };
 
 export default nextConfig;
