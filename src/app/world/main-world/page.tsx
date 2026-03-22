@@ -66,9 +66,15 @@ export default function MainWorldPage() {
 
         <Canvas shadows>
           <Suspense fallback={null}>
-            <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} />
+           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={10000} />
             
-            <Sky sunPosition={[100, 20, 100]} />
+          {/* Set the distance to a massive number to push the sky to the horizon */}
+    <Sky distance={450000} sunPosition={[100, 20, 100]} inclination={0} azimuth={0.25} />
+{/* The first color should match your sky's horizon color. 
+        'near' is where fog starts, 'far' is where it becomes solid. */}
+    <color attach="background" args={['#a2b9cf']} />
+    <fog attach="fog" args={['#a2b9cf', 10, 100]} />
+            
             <Environment preset="city" background={false} />
             <ambientLight intensity={0.4} />
             <pointLight position={[10, 10, 10]} castShadow />
