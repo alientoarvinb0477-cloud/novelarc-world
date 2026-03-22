@@ -9,18 +9,19 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "dependencies": {
-    "@clerk/nextjs": "latest",
-    "@react-three/drei": "latest",
-    "@react-three/fiber": "latest",
-    "@react-three/rapier": "latest",
-    "lucide-react": "latest",
-   "next": "16.1.6",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "three": "latest",
-    "tailwindcss": "latest"
-  },
+"dependencies": {
+  "next": "16.1.6",
+  "react": "latest",
+  "react-dom": "latest",
+  "tailwindcss": "4.0.0",
+  "@tailwindcss/postcss": "4.0.0",
+  "lucide-react": "latest",
+  "three": "latest",
+  "@types/three": "latest",
+  "@react-three/fiber": "latest",
+  "@react-three/drei": "latest",
+  "@react-three/rapier": "latest"
+},
 "devDependencies": {
     "eslint": "latest",
     "eslint-config-next": "latest",
