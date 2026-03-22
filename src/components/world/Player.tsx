@@ -6,8 +6,8 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useKeyboardControls } from "@react-three/drei";
 import { RigidBody, RapierRigidBody, CapsuleCollider } from "@react-three/rapier";
 
-const MOVE_SPEED = 15;
-const JUMP_FORCE = 7;
+const MOVE_SPEED = 25;
+const JUMP_FORCE = 12;
 
 export default function Player() {
   const rb = useRef<RapierRigidBody>(null);
