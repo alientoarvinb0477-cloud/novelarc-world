@@ -10,11 +10,11 @@ const nextConfig: NextConfig = {
     return config;
   },
   eslint: {
-    // This allows the build to finish even if there are tiny typos
+    // This is the "Safety Switch" that ignores those 'Let's' typos
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // This ignores type errors so you can test your world faster
+    // This ignores the 'state is defined' warning
     ignoreBuildErrors: true,
   },
 };
