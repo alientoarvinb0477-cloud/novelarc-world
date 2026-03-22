@@ -19,7 +19,8 @@ export default function Player() {
   const sideVector = new THREE.Vector3();
   const direction = new THREE.Vector3();
 
-  useFrame((state) => {
+// Change line 22 to:
+useFrame(() => {
     if (!rb.current) return;
 
     // 1. Get current position of the physics body
