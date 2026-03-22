@@ -51,7 +51,8 @@ export default function LandingPage() {
         <div className="flex flex-col sm:flex-row gap-6 justify-center pt-8 items-center">
           <Link href="/world/main-world">
             <button className="group relative flex items-center gap-4 bg-orange-600 text-white px-12 py-6 rounded-full font-sans font-black uppercase text-xs tracking-[0.2em] hover:bg-white hover:text-black transition-all shadow-[0_0_40px_rgba(234,88,12,0.3)] active:scale-95 overflow-hidden">
-              <span className="relative z-10">Let's Get Started</span>
+       
+              <span className="relative z-10">Let&apos;s Get Started</span>
               <ArrowRight size={18} className="relative z-10 group-hover:translate-x-2 transition-transform" />
               
               {/* Button Shine Effect */}
