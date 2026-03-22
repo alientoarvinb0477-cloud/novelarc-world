@@ -20,7 +20,9 @@
     "react-dom": "^19.0.0",
     "three": "latest"
   },
-  "devDependencies": {
+"devDependencies": {
+    "eslint": "latest",
+    "eslint-config-next": "latest",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
