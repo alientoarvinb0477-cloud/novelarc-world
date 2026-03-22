@@ -6,7 +6,8 @@ import Crosshair from "../components/world/Crosshair";
 
 export default function LandingPage() {
   return (
-    <main className="h-screen flex flex-col items-center justify-center bg-[#0a0a0a] text-stone-100 px-6 overflow-hidden relative">
+  <main className="relative w-full h-screen">
+      <Crosshair />
       
       {/* ─── UI ELEMENTS ─── */}
       {/* This places the crosshair in the center of the landing page */}
