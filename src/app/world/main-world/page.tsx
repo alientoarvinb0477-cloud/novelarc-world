@@ -69,7 +69,7 @@ export default function MainWorldPage() {
             <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} />
             
             <Sky sunPosition={[100, 20, 100]} />
-            <Environment preset="city" />
+            <Environment preset="city" background={false} />
             <ambientLight intensity={0.4} />
             <pointLight position={[10, 10, 10]} castShadow />
 
