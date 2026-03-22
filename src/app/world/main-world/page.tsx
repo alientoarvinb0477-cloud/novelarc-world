@@ -6,12 +6,21 @@ import {
   PointerLockControls, 
   Sky, 
   Environment, 
-  PerspectiveCamera
+  PerspectiveCamera,
+  KeyboardControls // Added this import
 } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Loader2 } from "lucide-react";
-// Using a relative path to ensure the build never misses it
 import Player from "../../../components/world/Player";
+
+// 1. Define the keys your Player component is looking for
+const keyMap = [
+  { name: "forward", keys: ["ArrowUp", "KeyW"] },
+  { name: "backward", keys: ["ArrowDown", "KeyS"] },
+  { name: "left", keys: ["ArrowLeft", "KeyA"] },
+  { name: "right", keys: ["ArrowRight", "KeyD"] },
+  { name: "jump", keys: ["Space"] },
+];
 
 function WorldFloor() {
   return (
@@ -24,7 +33,6 @@ function WorldFloor() {
   );
 }
 
-// Separated Loading UI to keep the Main component clean
 function LoadingUI() {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
@@ -38,50 +46,52 @@ function LoadingUI() {
 
 export default function MainWorldPage() {
   return (
-    <div className="w-full h-screen bg-black relative">
-      
-      {/* --- UI OVERLAY (HUD) --- */}
-      <div className="absolute top-10 left-10 z-10 pointer-events-none">
-        <h2 className="text-white font-sans text-[10px] font-bold uppercase tracking-[0.4em] opacity-50">
-          Area: Main World / Sector 01
-        </h2>
-      </div>
+    // 2. Wrap the entire page in KeyboardControls
+    <KeyboardControls map={keyMap}>
+      <div className="w-full h-screen bg-black relative">
+        
+        {/* --- UI OVERLAY (HUD) --- */}
+        <div className="absolute top-10 left-10 z-10 pointer-events-none">
+          <h2 className="text-white font-sans text-[10px] font-bold uppercase tracking-[0.4em] opacity-50">
+            Area: Main World / Sector 01
+          </h2>
+        </div>
 
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-center">
-        <p className="text-stone-500 font-sans text-[9px] font-bold uppercase tracking-widest bg-black/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
-          Click Screen to Control View • WASD to Move
-        </p>
-      </div>
+        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-center">
+          <p className="text-stone-500 font-sans text-[9px] font-bold uppercase tracking-widest bg-black/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
+            Click Screen to Control View • WASD to Move
+          </p>
+        </div>
 
-      {/* --- 3D CANVAS --- */}
-      <Canvas shadows>
-        <Suspense fallback={null}>
-          <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
-          
-          <Sky sunPosition={[100, 20, 100]} />
-          <Environment preset="city" />
-          <ambientLight intensity={0.4} />
-          <pointLight position={[10, 10, 10]} castShadow />
-
-          {/* Physics Wrapper starts here */}
-          <Physics gravity={[0, -9.81, 0]}>
-            <WorldFloor />
-            <Player /> 
+        {/* --- 3D CANVAS --- */}
+        <Canvas shadows>
+          <Suspense fallback={null}>
+            <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
             
-            <RigidBody colliders="cuboid">
-              <mesh position={[0, 1, -5]} castShadow>
-                <boxGeometry args={[2, 2, 2]} />
-                <meshStandardMaterial color="orange" />
-              </mesh>
-            </RigidBody>
-          </Physics>
+            <Sky sunPosition={[100, 20, 100]} />
+            <Environment preset="city" />
+            <ambientLight intensity={0.4} />
+            <pointLight position={[10, 10, 10]} castShadow />
 
-          <PointerLockControls />
-        </Suspense>
-      </Canvas>
+            <Physics gravity={[0, -9.81, 0]}>
+              <WorldFloor />
+              <Player /> 
+              
+              <RigidBody colliders="cuboid">
+                <mesh position={[0, 1, -5]} castShadow>
+                  <boxGeometry args={[2, 2, 2]} />
+                  <meshStandardMaterial color="orange" />
+                </mesh>
+              </RigidBody>
+            </Physics>
 
-      {/* Loading Screen Overlay */}
-      <LoadingUI />
-    </div>
+            <PointerLockControls />
+          </Suspense>
+        </Canvas>
+
+        {/* Loading Screen Overlay */}
+        <LoadingUI />
+      </div>
+    </KeyboardControls>
   );
 }
