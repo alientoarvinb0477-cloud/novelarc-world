@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // 1. This handles your 3D Physics/Rapier experiments
   webpack: (config) => {
     config.experiments = {
       ...config.experiments,
@@ -9,14 +10,16 @@ const nextConfig: NextConfig = {
     };
     return config;
   },
-  eslint: {
-    // This allows the build to finish even with the 'Let's' typo
-    ignoreDuringBuilds: true,
+  
+  // 2. This silences the Turbopack error by providing an empty config
+  experimental: {
+    turbo: {}
   },
+
+  // 3. Next.js 16 moved these inside the 'typescript' block for security
   typescript: {
-    // This allows the build to finish even with the 'state' warning
     ignoreBuildErrors: true,
-  },
+  }
 };
 
 export default nextConfig;
