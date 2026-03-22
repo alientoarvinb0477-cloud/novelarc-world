@@ -6,32 +6,20 @@ import {
   PointerLockControls, 
   Sky, 
   Environment, 
-  PerspectiveCamera,
-  useTexture,
-  useGLTF
+  PerspectiveCamera
 } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Loader2 } from "lucide-react";
+// Fixed the import path to match your src structure
 import Player from "@/components/world/Player";
 
-// --- CUSTOM FLOOR COMPONENT ---
 function WorldFloor() {
-  // OPTION A: If your floor is a TEXTURE (Image)
-  // const texture = useTexture("/your-floor-file.jpg"); 
-  
-  // OPTION B: If your floor is a 3D MODEL (.glb)
-  // const { scene } = useGLTF("/your-floor-file.glb");
-
   return (
     <RigidBody type="fixed">
-      {/* Default floor if you haven't linked your file yet */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[100, 100]} />
         <meshStandardMaterial color="#1c1917" /> 
-        {/* If using texture: <meshStandardMaterial map={texture} /> */}
       </mesh>
-      
-      {/* If using a 3D model: <primitive object={scene} /> */}
     </RigidBody>
   );
 }
@@ -58,20 +46,16 @@ export default function MainWorldPage() {
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
           
-          {/* Lighting & Environment */}
           <Sky sunPosition={[100, 20, 100]} />
           <Environment preset="city" />
           <ambientLight intensity={0.4} />
           <pointLight position={[10, 10, 10]} castShadow />
 
-<Physics gravity={[0, -9.81, 0]}>
-  <WorldFloor />
-  
-  {/* The Player handles its own camera syncing and movement */}
-  <Player /> 
-</Physics>
+          {/* Fixed: Only ONE Physics wrapper now */}
+          <Physics gravity={[0, -9.81, 0]}>
+            <WorldFloor />
+            <Player /> 
             
-            {/* Placeholder Object */}
             <RigidBody colliders="cuboid">
               <mesh position={[0, 1, -5]} castShadow>
                 <boxGeometry args={[2, 2, 2]} />
@@ -80,22 +64,26 @@ export default function MainWorldPage() {
             </RigidBody>
           </Physics>
 
-          {/* This captures the mouse for 1st person looking */}
           <PointerLockControls />
         </Suspense>
       </Canvas>
 
-{/* Find the "Loading Screen" at the bottom and replace with this: */}
-<Suspense fallback={
-  <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
-    <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
-    <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
-      Manifesting Environment...
-    </span>
-  </div>
-}>
-  <div /> {/* Needs a child to be valid JSX */}
-</Suspense>
+      {/* Loading Overlay */}
+      <Suspense fallback={null}>
+        <LoadingUI />
+      </Suspense>
+    </div>
+  );
+}
+
+// Separated Loading UI for cleaner code
+function LoadingUI() {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
+      <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
+      <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
+        Manifesting Environment...
+      </span>
     </div>
   );
 }
