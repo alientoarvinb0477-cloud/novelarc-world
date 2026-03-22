@@ -85,12 +85,17 @@ export default function MainWorldPage() {
         </Suspense>
       </Canvas>
 
-      {/* Loading Screen */}
-      <Suspense fallback={
-        <div className="absolute inset-0 flex items-center justify-center bg-black z-50">
-          <Loader2 className="text-orange-600 animate-spin" size={32} />
-        </div>
-      } />
+{/* Find the "Loading Screen" at the bottom and replace with this: */}
+<Suspense fallback={
+  <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
+    <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
+    <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
+      Manifesting Environment...
+    </span>
+  </div>
+}>
+  <div /> {/* Needs a child to be valid JSX */}
+</Suspense>
     </div>
   );
 }
