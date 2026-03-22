@@ -7,13 +7,13 @@ import {
   Sky, 
   Environment, 
   PerspectiveCamera,
-  KeyboardControls // Added this import
+  KeyboardControls,
+  useGLTF // Added this for your model
 } from "@react-three/drei";
 import { Physics, RigidBody } from "@react-three/rapier";
 import { Loader2 } from "lucide-react";
 import Player from "../../../components/world/Player";
 
-// 1. Define the keys your Player component is looking for
 const keyMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -22,13 +22,17 @@ const keyMap = [
   { name: "jump", keys: ["Space"] },
 ];
 
+// --- UPDATED FLOOR COMPONENT ---
 function WorldFloor() {
+  // This loads your floor.glb from the public folder
+  const { scene } = useGLTF("/floor.glb");
+
   return (
-    <RigidBody type="fixed">
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color="#1c1917" /> 
-      </mesh>
+    <RigidBody type="fixed" colliders="trimesh">
+      {/* 'trimesh' collider is best for custom floors because 
+        it follows the exact shape of your 3D model.
+      */}
+      <primitive object={scene} />
     </RigidBody>
   );
 }
@@ -46,11 +50,10 @@ function LoadingUI() {
 
 export default function MainWorldPage() {
   return (
-    // 2. Wrap the entire page in KeyboardControls
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
         
-        {/* --- UI OVERLAY (HUD) --- */}
+        {/* UI HUD */}
         <div className="absolute top-10 left-10 z-10 pointer-events-none">
           <h2 className="text-white font-sans text-[10px] font-bold uppercase tracking-[0.4em] opacity-50">
             Area: Main World / Sector 01
@@ -63,10 +66,9 @@ export default function MainWorldPage() {
           </p>
         </div>
 
-        {/* --- 3D CANVAS --- */}
         <Canvas shadows>
           <Suspense fallback={null}>
-            <PerspectiveCamera makeDefault position={[0, 2, 5]} fov={50} />
+            <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} />
             
             <Sky sunPosition={[100, 20, 100]} />
             <Environment preset="city" />
@@ -74,9 +76,12 @@ export default function MainWorldPage() {
             <pointLight position={[10, 10, 10]} castShadow />
 
             <Physics gravity={[0, -9.81, 0]}>
+              {/* Using your custom GLB floor here */}
               <WorldFloor />
+              
               <Player /> 
               
+              {/* Keep the orange box for reference */}
               <RigidBody colliders="cuboid">
                 <mesh position={[0, 1, -5]} castShadow>
                   <boxGeometry args={[2, 2, 2]} />
@@ -89,9 +94,11 @@ export default function MainWorldPage() {
           </Suspense>
         </Canvas>
 
-        {/* Loading Screen Overlay */}
         <LoadingUI />
       </div>
     </KeyboardControls>
   );
 }
+
+// Pre-load the floor model to prevent flashing
+useGLTF.preload("/floor.glb");
