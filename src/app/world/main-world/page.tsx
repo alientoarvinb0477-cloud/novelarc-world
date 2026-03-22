@@ -24,14 +24,12 @@ const keyMap = [
 
 // --- UPDATED FLOOR COMPONENT ---
 function WorldFloor() {
-  // This loads your floor.glb from the public folder
   const { scene } = useGLTF("/floor.glb");
 
   return (
-    <RigidBody type="fixed" colliders="trimesh">
-      {/* 'trimesh' collider is best for custom floors because 
-        it follows the exact shape of your 3D model.
-      */}
+    // We remove the automatic collider and use 'hull' or 'cuboid' 
+    // if 'trimesh' continues to fail. 'hull' is usually the safest for custom floors.
+    <RigidBody type="fixed" colliders="hull">
       <primitive object={scene} />
     </RigidBody>
   );
