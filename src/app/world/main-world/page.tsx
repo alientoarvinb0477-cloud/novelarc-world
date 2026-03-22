@@ -8,10 +8,9 @@ import {
   Environment, 
   PerspectiveCamera,
   KeyboardControls,
-  useGLTF // Added this for your model
+  useGLTF 
 } from "@react-three/drei";
-import { Physics, RigidBody } from "@react-three/rapier";
-import { Loader2 } from "lucide-react";
+import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
 
 const keyMap = [
@@ -22,80 +21,57 @@ const keyMap = [
   { name: "jump", keys: ["Space"] },
 ];
 
-// --- UPDATED FLOOR COMPONENT ---
 function WorldFloor() {
-  const { scene } = useGLTF("/floor.glb");
-
+  const { scene } = useGLTF("/floor.glb"); //
   return (
-    // We remove the automatic collider and use 'hull' or 'cuboid' 
-    // if 'trimesh' continues to fail. 'hull' is usually the safest for custom floors.
-    <RigidBody type="fixed" colliders="hull">
+    <RigidBody type="fixed" colliders="trimesh">
       <primitive object={scene} />
     </RigidBody>
   );
 }
 
-function LoadingUI() {
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center bg-stone-950 z-50">
-      <Loader2 className="text-orange-600 animate-spin mb-4" size={40} />
-      <span className="text-[10px] text-stone-500 font-bold uppercase tracking-[0.3em]">
-        Manifesting Environment...
-      </span>
-    </div>
-  );
-}
-
 export default function MainWorldPage() {
+  // Define the size of your floor. If your GLB is 100x100 units, use 50 here.
+  const mapSize = 50; 
+
   return (
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
-        
-        {/* UI HUD */}
-        <div className="absolute top-10 left-10 z-10 pointer-events-none">
-          <h2 className="text-white font-sans text-[10px] font-bold uppercase tracking-[0.4em] opacity-50">
-            Area: Main World / Sector 01
-          </h2>
-        </div>
-
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 pointer-events-none text-center">
-          <p className="text-stone-500 font-sans text-[9px] font-bold uppercase tracking-widest bg-black/40 backdrop-blur-md px-6 py-3 rounded-full border border-white/10">
-            Click Screen to Control View • WASD to Move
-          </p>
-        </div>
-
         <Canvas shadows>
           <Suspense fallback={null}>
-           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={10000} />
+            {/* Increase 'far' so the floor and sky don't clip away */}
+            <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={10000} />
             
-          {/* Set the distance to a massive number to push the sky to the horizon */}
-    <Sky distance={450000} sunPosition={[100, 20, 100]} inclination={0} azimuth={0.25} />
-{/* The first color should match your sky's horizon color. 
-        'near' is where fog starts, 'far' is where it becomes solid. */}
-    <color attach="background" args={['#a2b9cf']} />
-    <fog attach="fog" args={['#a2b9cf', 10, 100]} />
-            
+            {/* Push the sky out to the horizon */}
+            <Sky distance={450000} sunPosition={[100, 20, 100]} />
             <Environment preset="city" background={false} />
+            
             <ambientLight intensity={0.4} />
             <pointLight position={[10, 10, 10]} castShadow />
 
             <Physics gravity={[0, -9.81, 0]}>
-              {/* Using your custom GLB floor here */}
               <WorldFloor />
-              
-              <Player /> 
-              
+              <Player />
+
+              {/* --- INVISIBLE BARRIERS --- */}
+              <RigidBody type="fixed">
+                {/* North Wall */}
+                <CuboidCollider args={[mapSize, 10, 1]} position={[0, 5, -mapSize]} />
+                {/* South Wall */}
+                <CuboidCollider args={[mapSize, 10, 1]} position={[0, 5, mapSize]} />
+                {/* East Wall */}
+                <CuboidCollider args={[1, 10, mapSize]} position={[mapSize, 5, 0]} />
+                {/* West Wall */}
+                <CuboidCollider args={[1, 10, mapSize]} position={[-mapSize, 5, 0]} />
+              </RigidBody>
             </Physics>
 
             <PointerLockControls />
           </Suspense>
         </Canvas>
-
-        <LoadingUI />
       </div>
     </KeyboardControls>
   );
 }
 
-// Pre-load the floor model to prevent flashing
-useGLTF.preload("/floor.glb");
+useGLTF.preload("/floor.glb"); //
