@@ -33,7 +33,7 @@ function WorldFloor() {
 
 export default function MainWorldPage() {
   // We set the boundary to match the sky distance (450,000 units)
-  const mapSize = 450000; 
+  const mapSize = 10000; 
   const wallHeight = 1000;
 
   return (
