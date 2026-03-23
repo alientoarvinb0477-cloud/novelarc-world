@@ -14,7 +14,6 @@ import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 
-// Keyboard mapping for the Player controller
 const keyMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
   { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -33,24 +32,21 @@ function WorldFloor() {
 }
 
 export default function MainWorldPage() {
-  // We set the boundary to match the sky distance (450,000 units)
-  const mapSize = 10000; 
+  const mapSize = 450000; 
   const wallHeight = 1000;
 
   return (
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
-        <LoadingScreen /> {/* This sits on top of everything */}
-      <div className="w-full h-screen bg-black relative">
+        
+        {/* The Loading Screen handles its own visibility based on useProgress */}
+        <LoadingScreen />
+
         <Canvas shadows>
           <Suspense fallback={null}>
-            {/* 'far' is set to 1,000,000 so the sky/floor doesn't vanish in the distance */}
             <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
             
-            {/* Sky matches the mapSize boundary */}
             <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
-            
-            {/* background={false} fixes the 'blurry view' issue */}
             <Environment preset="city" background={false} />
             
             <ambientLight intensity={0.4} />
@@ -60,15 +56,11 @@ export default function MainWorldPage() {
               <WorldFloor />
               <Player />
 
-              {/* --- MASSIVE INVISIBLE BARRIERS --- */}
+              {/* --- INVISIBLE BARRIERS --- */}
               <RigidBody type="fixed">
-                {/* North Wall */}
                 <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, -mapSize]} />
-                {/* South Wall */}
                 <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, mapSize]} />
-                {/* East Wall */}
                 <CuboidCollider args={[10, wallHeight, mapSize]} position={[mapSize, wallHeight / 2, 0]} />
-                {/* West Wall */}
                 <CuboidCollider args={[10, wallHeight, mapSize]} position={[-mapSize, wallHeight / 2, 0]} />
               </RigidBody>
             </Physics>
@@ -81,5 +73,4 @@ export default function MainWorldPage() {
   );
 }
 
-// Preload to prevent 'Application Error' popups during initial load
 useGLTF.preload("/floor.glb");
