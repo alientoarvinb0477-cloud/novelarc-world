@@ -9,6 +9,16 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 
+// Move the GLTF loading to its own component to prevent build errors
+function WorldFloor() {
+  const { scene } = useGLTF("/floor.glb");
+  return (
+    <RigidBody type="fixed" colliders="trimesh">
+      <primitive object={scene} />
+    </RigidBody>
+  );
+}
+
 function KeyboardListener() {
   const setMove = useStore((state) => state.setMove);
   useEffect(() => {
@@ -31,11 +41,15 @@ function KeyboardListener() {
 
 export default function MainWorldPage() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const mapSize = 450000;
   
   useEffect(() => {
+    setIsMounted(true);
     setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
   }, []);
+
+  if (!isMounted) return <div className="w-full h-screen bg-black" />;
 
   return (
     <div className="w-full h-screen bg-black relative">
@@ -52,8 +66,11 @@ export default function MainWorldPage() {
           <pointLight position={[10, 10, 10]} castShadow />
 
           <Physics gravity={[0, -9.81, 0]}>
-            <RigidBody type="fixed" colliders="trimesh"><primitive object={useGLTF("/floor.glb").scene} /></RigidBody>
+            {/* The floor will only attempt to load in the browser now */}
+            <WorldFloor />
+            
             <Player />
+            
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, mapSize]} />
@@ -61,6 +78,7 @@ export default function MainWorldPage() {
               <CuboidCollider args={[10, 1000, mapSize]} position={[-mapSize, 500, 0]} />
             </RigidBody>
           </Physics>
+
           {!isMobile && <PointerLockControls />}
         </Suspense>
       </Canvas>
