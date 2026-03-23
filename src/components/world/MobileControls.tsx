@@ -7,22 +7,69 @@ export default function MobileControls() {
   const [isMobile, setIsMobile] = useState(false);
   const setMove = useStore((state) => state.setMove);
   
-  const joystickRef = useRef<HTMLDivElement>(null);
+  // Refs for Joystick Positioning
+  const joystickContainerRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
+  const [joystickPos, setJoystickPos] = useState({ x: 100, y: 0 }); // Default start pos
+  const [showJoystick, setShowJoystick] = useState(false);
+
+  // Look Sensitivity Refs
   const touchStart = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
+      // Set initial vertical position to bottom
+      setJoystickPos(prev => ({ ...prev, y: window.innerHeight - 150 }));
     }
   }, []);
 
   if (!isMobile) return null;
 
-  // --- LOOK AROUND LOGIC (Right Side of Screen) ---
+  // --- DYNAMIC JOYSTICK LOGIC ---
+  const handleLeftTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    // Center the joystick exactly where the thumb landed
+    setJoystickPos({ x: touch.clientX, y: touch.clientY });
+    setShowJoystick(true);
+  };
+
+  const handleJoystickMove = (e: React.TouchEvent) => {
+    if (!thumbRef.current) return;
+    
+    const touch = e.touches[0];
+    let dx = touch.clientX - joystickPos.x;
+    let dy = touch.clientY - joystickPos.y;
+    
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const maxRadius = 50; // Distance the knob can travel
+    
+    if (distance > maxRadius) {
+      dx *= maxRadius / distance;
+      dy *= maxRadius / distance;
+    }
+
+    thumbRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
+
+    // Map to Movement Store
+    const threshold = 10; 
+    setMove("forward", dy < -threshold);
+    setMove("backward", dy > threshold);
+    setMove("left", dx < -threshold);
+    setMove("right", dx > threshold);
+  };
+
+  const resetJoystick = () => {
+    setShowJoystick(false);
+    setMove("forward", false);
+    setMove("backward", false);
+    setMove("left", false);
+    setMove("right", false);
+  };
+
+  // --- LOOK AROUND LOGIC (Right Side) ---
   const handleLookMove = (e: React.TouchEvent) => {
     const touch = e.touches[0];
-    // Check if touch is on the right half of the screen
     if (touch.clientX < window.innerWidth / 2) return;
 
     const deltaX = touch.clientX - touchStart.current.x;
@@ -36,83 +83,55 @@ export default function MobileControls() {
     }));
   };
 
-  // --- JOYSTICK LOGIC (Bottom Left) ---
-  const handleJoystickMove = (e: React.TouchEvent) => {
-    if (!joystickRef.current || !thumbRef.current) return;
-    
-    const rect = joystickRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    const touch = e.touches[0];
-    let dx = touch.clientX - centerX;
-    let dy = touch.clientY - centerY;
-    
-    const distance = Math.sqrt(dx * dx + dy * dy);
-    const maxRadius = rect.width / 2;
-    
-    if (distance > maxRadius) {
-      dx *= maxRadius / distance;
-      dy *= maxRadius / distance;
-    }
-
-    thumbRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
-
-    // Deadzone and direction mapping
-    const threshold = 12; 
-    setMove("forward", dy < -threshold);
-    setMove("backward", dy > threshold);
-    setMove("left", dx < -threshold);
-    setMove("right", dx > threshold);
-  };
-
-  const resetJoystick = () => {
-    if (thumbRef.current) thumbRef.current.style.transform = `translate(0px, 0px)`;
-    setMove("forward", false);
-    setMove("backward", false);
-    setMove("left", false);
-    setMove("right", false);
-  };
-
   return (
-    <div className="fixed inset-0 z-[150] select-none pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-[150] select-none pointer-events-none overflow-hidden touch-none">
       
-      {/* RIGHT SIDE: Touch-to-Look Area */}
+      {/* LEFT ZONE: Joystick Trigger Area */}
       <div 
-        className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto active:cursor-grabbing"
+        className="absolute inset-y-0 left-0 w-1/2 pointer-events-auto"
+        onTouchStart={handleLeftTouchStart}
+        onTouchMove={handleJoystickMove}
+        onTouchEnd={resetJoystick}
+      />
+
+      {/* RIGHT ZONE: Look Area */}
+      <div 
+        className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto"
         onTouchStart={(e) => { touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
         onTouchMove={handleLookMove}
       />
 
-      {/* --- JOYSTICK (Bottom Left) --- */}
-      <div className="absolute bottom-12 left-12 pointer-events-auto">
+      {/* --- THE DYNAMIC JOYSTICK VISUAL --- */}
+      <div 
+        ref={joystickContainerRef}
+        style={{ 
+          left: joystickPos.x, 
+          top: joystickPos.y, 
+          opacity: showJoystick ? 1 : 0,
+          transform: 'translate(-50%, -50%)' 
+        }}
+        className="absolute w-32 h-32 rounded-full bg-stone-900/40 border-2 border-white/10 backdrop-blur-md flex items-center justify-center transition-opacity duration-200 pointer-events-none"
+      >
+        {/* Decorative Ring */}
+        <div className="absolute inset-4 rounded-full border border-orange-500/20" />
+        
+        {/* Thumb Knob */}
         <div 
-          ref={joystickRef}
-          className="w-36 h-36 rounded-full bg-stone-900/40 border-2 border-white/10 flex items-center justify-center backdrop-blur-md shadow-2xl"
-          onTouchMove={handleJoystickMove}
-          onTouchEnd={resetJoystick}
+          ref={thumbRef}
+          className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-[0_0_20px_rgba(234,88,12,0.6)] border-2 border-orange-300/30 flex items-center justify-center transition-transform duration-75"
         >
-          {/* Inner Ring Decor */}
-          <div className="absolute inset-4 rounded-full border border-white/5 pointer-none" />
-          
-          {/* Joystick Thumb (Knob) */}
-          <div 
-            ref={thumbRef}
-            className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 shadow-[0_0_25px_rgba(234,88,12,0.5)] border-2 border-orange-300/30 transition-transform duration-75 flex items-center justify-center"
-          >
-             <div className="w-8 h-8 rounded-full bg-white/10 border border-white/10" />
-          </div>
+          <div className="w-6 h-6 rounded-full bg-white/10" />
         </div>
       </div>
 
-      {/* --- ACTION BUTTON (Bottom Right) --- */}
-      <div className="absolute bottom-16 right-16 pointer-events-auto scale-110">
+      {/* --- FIXED ACTION BUTTON (Bottom Right) --- */}
+      <div className="absolute bottom-12 right-12 pointer-events-auto">
         <button 
           onPointerDown={() => setMove("jump", true)} 
           onPointerUp={() => setMove("jump", false)}
-          className="w-20 h-20 rounded-full bg-orange-600/20 border-2 border-orange-500/50 flex items-center justify-center active:bg-orange-600 active:scale-90 transition-all shadow-[0_0_40px_rgba(234,88,12,0.2)]"
+          className="w-20 h-20 rounded-full bg-orange-600/20 border-2 border-orange-500/50 flex items-center justify-center active:bg-orange-600 active:scale-90 transition-all shadow-[0_0_30px_rgba(234,88,12,0.2)]"
         >
-          <span className="text-orange-500 font-bold text-[10px] uppercase tracking-tighter active:text-white">Jump</span>
+          <span className="text-orange-500 font-bold text-[10px] uppercase active:text-white">Jump</span>
         </button>
       </div>
 
