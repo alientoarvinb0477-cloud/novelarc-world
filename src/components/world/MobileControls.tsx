@@ -36,21 +36,57 @@ export default function MobileControls() {
 
   return (
     <div className="fixed inset-0 z-[150] select-none pointer-events-none">
-      {/* Look Surface */}
+      {/* Look Surface (Left side of screen for looking) */}
       <div className="absolute inset-0 pointer-events-auto" onTouchStart={handleLookStart} onTouchMove={handleLookMove} />
 
-      {/* D-PAD */}
-      <div className="absolute bottom-10 left-10 flex flex-col items-center gap-2 pointer-events-auto opacity-60">
-        <button onPointerDown={() => setMove("forward", true)} onPointerUp={() => setMove("forward", false)} className="w-16 h-16 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white">▲</button>
-        <div className="flex gap-2">
-          <button onPointerDown={() => setMove("left", true)} onPointerUp={() => setMove("left", false)} className="w-16 h-16 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white">◀</button>
-          <button onPointerDown={() => setMove("backward", true)} onPointerUp={() => setMove("backward", false)} className="w-16 h-16 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white">▼</button>
-          <button onPointerDown={() => setMove("right", true)} onPointerUp={() => setMove("right", false)} className="w-16 h-16 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white">▶</button>
-        </div>
-      </div>
+      {/* --- CONTROLS GROUP (Bottom Right) --- */}
+      <div className="absolute bottom-6 right-6 flex flex-col items-center gap-2 pointer-events-auto opacity-60 scale-90">
+        
+        {/* UP */}
+        <button 
+          onPointerDown={() => setMove("forward", true)} 
+          onPointerUp={() => setMove("forward", false)} 
+          className="w-14 h-14 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white shadow-xl"
+        >
+          ▲
+        </button>
 
-      {/* JUMP */}
-      <button onPointerDown={() => setMove("jump", true)} onPointerUp={() => setMove("jump", false)} className="absolute bottom-10 right-10 w-24 h-24 bg-orange-600/20 border-2 border-orange-600/50 rounded-full flex items-center justify-center font-black text-orange-500 pointer-events-auto active:bg-orange-600 active:text-white">JUMP</button>
+        <div className="flex gap-2">
+          {/* LEFT */}
+          <button 
+            onPointerDown={() => setMove("left", true)} 
+            onPointerUp={() => setMove("left", false)} 
+            className="w-14 h-14 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white shadow-xl"
+          >
+            ◀
+          </button>
+          {/* DOWN */}
+          <button 
+            onPointerDown={() => setMove("backward", true)} 
+            onPointerUp={() => setMove("backward", false)} 
+            className="w-14 h-14 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white shadow-xl"
+          >
+            ▼
+          </button>
+          {/* RIGHT */}
+          <button 
+            onPointerDown={() => setMove("right", true)} 
+            onPointerUp={() => setMove("right", false)} 
+            className="w-14 h-14 bg-stone-900 border border-stone-700 rounded-full flex items-center justify-center active:bg-orange-600 text-white shadow-xl"
+          >
+            ▶
+          </button>
+        </div>
+
+        {/* JUMP (Directly below D-pad) */}
+        <button 
+          onPointerDown={() => setMove("jump", true)} 
+          onPointerUp={() => setMove("jump", false)} 
+          className="mt-2 w-32 h-12 bg-orange-600/30 border border-orange-500 rounded-full flex items-center justify-center font-black text-[10px] tracking-[0.3em] text-orange-500 active:bg-orange-600 active:text-white transition-all shadow-lg"
+        >
+          JUMP
+        </button>
+      </div>
     </div>
   );
 }
