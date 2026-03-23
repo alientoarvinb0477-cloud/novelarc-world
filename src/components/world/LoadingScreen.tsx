@@ -9,7 +9,7 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     if (!active && progress === 100) {
-      const timer = setTimeout(() => setShown(false), 1200);
+      const timer = setTimeout(() => setShown(false), 800);
       return () => clearTimeout(timer);
     }
   }, [progress, active]);
@@ -17,48 +17,64 @@ export default function LoadingScreen() {
   if (!shown) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-opacity duration-1000 ${!active ? 'opacity-0' : 'opacity-100'}`}>
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-1000 ${!active ? 'opacity-0' : 'opacity-100'}`}>
       
-      <div className="relative w-64 h-64 flex items-center justify-center">
-        {/* --- CENTRAL ANIMATION: THE 'SCANNER' --- */}
-        <div className="absolute w-full h-full border border-stone-900 rounded-full animate-[spin_4s_linear_infinite]" />
-        <div className="absolute w-[80%] h-[80%] border border-orange-900/30 rounded-full animate-[spin_2s_linear_infinite_reverse]" />
-        
-        {/* The "Walking" Dot / Human Placeholder */}
-        <div className="flex flex-col items-center gap-2">
-           <div className="w-1 h-8 bg-orange-600 animate-bounce" />
-           <div className="w-4 h-1 bg-orange-600/50 blur-[2px] animate-pulse" />
-        </div>
-      </div>
-
-      {/* --- STATUS TEXT --- */}
-      <div className="mt-12 w-72 space-y-4">
-        <div className="flex justify-between items-end">
-          <span className="text-orange-500 font-sans text-[9px] font-black uppercase tracking-[0.4em]">
-            {active ? "Initialising Grid" : "System Ready"}
-          </span>
-          <span className="text-stone-500 font-mono text-[10px]">
-            {Math.round(progress)}%
-          </span>
-        </div>
-
-        {/* --- PROGRESS BAR --- */}
-        <div className="w-full h-[1px] bg-stone-900 relative">
-          <div 
-            className="absolute h-full bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.5)] transition-all duration-500 ease-out"
-            style={{ width: `${progress}%` }}
-          />
-          {/* Scanning light that runs across the bar */}
-          <div className="absolute h-full w-20 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" />
-        </div>
-
-        <p className="text-stone-700 font-sans text-[7px] uppercase tracking-[0.2em] text-center">
-          Sector: Valenzuela • Node: ARC-V1
-        </p>
-      </div>
-
-      {/* Background Grid Pattern */}
+      {/* Background Texture */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] -z-10" />
+
+      <div className="flex flex-col items-center justify-center space-y-8">
+        
+        {/* --- CENTRAL LOADING CIRCLE --- */}
+        <div className="relative flex items-center justify-center w-32 h-32">
+          {/* Static Background Ring */}
+          <svg className="absolute w-full h-full rotate-[-90deg]">
+            <circle
+              cx="64"
+              cy="64"
+              r="60"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="transparent"
+              className="text-stone-900"
+            />
+            {/* Animated Progress Ring */}
+            <circle
+              cx="64"
+              cy="64"
+              r="60"
+              stroke="currentColor"
+              strokeWidth="2"
+              fill="transparent"
+              strokeDasharray={377}
+              strokeDashoffset={377 - (377 * progress) / 100}
+              strokeLinecap="round"
+              className="text-orange-600 transition-all duration-500 ease-out shadow-[0_0_15px_rgba(234,88,12,0.5)]"
+            />
+          </svg>
+
+          {/* Percentage in Center */}
+          <div className="flex flex-col items-center">
+            <span className="text-white font-mono text-xl font-black tracking-tighter">
+              {Math.round(progress)}%
+            </span>
+          </div>
+        </div>
+
+        {/* --- STATUS TEXT --- */}
+        <div className="text-center space-y-2">
+          <p className="text-orange-500 font-sans text-[10px] font-black uppercase tracking-[0.6em] animate-pulse">
+            {active ? "Initialising Grid" : "System Ready"}
+          </p>
+          <div className="flex items-center justify-center gap-2">
+            <div className="h-[1px] w-4 bg-stone-800" />
+            <p className="text-stone-600 font-sans text-[7px] uppercase tracking-[0.3em]">
+              Node: ARC-V1 • Valenzuela
+            </p>
+            <div className="h-[1px] w-4 bg-stone-800" />
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }
