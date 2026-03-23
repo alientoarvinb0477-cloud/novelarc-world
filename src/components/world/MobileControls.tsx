@@ -7,11 +7,10 @@ export default function MobileControls() {
   const [isMobile, setIsMobile] = useState(false);
   const [isPortrait, setIsPortrait] = useState(false);
   
-  // FIXED POSITION for debugging - Bottom Left
-  const [joystickPos, setJoystickPos] = useState({ x: 100, y: 0 });
+  // Hard-coded position for the bottom-left corner
+  const [basePos, setBasePos] = useState({ x: 120, y: 0 });
   const setMove = useStore((state) => state.setMove);
   
-  const joystickRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const touchStart = useRef({ x: 0, y: 0 });
 
@@ -20,8 +19,8 @@ export default function MobileControls() {
       const check = () => {
         setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
         setIsPortrait(window.innerHeight > window.innerWidth);
-        // Position it 100px from left, 100px from bottom
-        setJoystickPos({ x: 100, y: window.innerHeight - 100 });
+        // Force center position based on actual screen height
+        setBasePos({ x: 120, y: window.innerHeight - 120 });
       };
       check();
       window.addEventListener("resize", check);
@@ -31,12 +30,12 @@ export default function MobileControls() {
 
   if (!isMobile) return null;
 
-  // Portrait Lock
+  // Portrait Lock Overlay
   if (isPortrait) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center p-10">
+      <div className="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center">
         <div className="w-16 h-10 border-2 border-orange-500 rounded-lg animate-bounce mb-4" />
-        <h2 className="text-white font-bold uppercase text-xs">Rotate to Landscape</h2>
+        <h2 className="text-white font-bold uppercase text-[10px] tracking-widest">Rotate for Landscape</h2>
       </div>
     );
   }
@@ -45,12 +44,11 @@ export default function MobileControls() {
     if (!thumbRef.current) return;
     const touch = e.touches[0];
     
-    // Logic stays the same
-    let dx = touch.clientX - joystickPos.x;
-    let dy = touch.clientY - joystickPos.y;
+    let dx = touch.clientX - basePos.x;
+    let dy = touch.clientY - basePos.y;
     
     const distance = Math.sqrt(dx * dx + dy * dy);
-    const maxRadius = 50;
+    const maxRadius = 50; // Keep this constant
     
     if (distance > maxRadius) {
       dx *= maxRadius / distance;
@@ -59,7 +57,7 @@ export default function MobileControls() {
 
     thumbRef.current.style.transform = `translate(${dx}px, ${dy}px)`;
 
-    const threshold = 10;
+    const threshold = 15;
     setMove("forward", dy < -threshold);
     setMove("backward", dy > threshold);
     setMove("left", dx < -threshold);
@@ -74,42 +72,75 @@ export default function MobileControls() {
     setMove("right", false);
   };
 
+  const handleLookMove = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (touch.clientX < window.innerWidth / 2) return;
+
+    const deltaX = touch.clientX - touchStart.current.x;
+    const deltaY = touch.clientY - touchStart.current.y;
+    touchStart.current = { x: touch.clientX, y: touch.clientY };
+
+    window.dispatchEvent(new MouseEvent("mousemove", {
+      movementX: deltaX * 1.5,
+      movementY: deltaY * 1.5,
+      bubbles: true
+    }));
+  };
+
   return (
-    <div className="fixed inset-0 z-[999] pointer-events-none select-none touch-none w-full h-full">
+    // FORCE FULL SCREEN HEIGHT/WIDTH
+    <div className="fixed top-0 left-0 w-screen h-screen z-[999] pointer-events-none select-none touch-none bg-transparent">
       
-      {/* JOYSTICK TRIGGER ZONE (Visible Border for Debugging) */}
+      {/* 1. LEFT SIDE - JOYSTICK INTERACTION AREA */}
       <div 
-        className="absolute bottom-4 left-4 w-48 h-48 pointer-events-auto rounded-xl bg-white/5 border border-white/10"
+        className="absolute inset-y-0 left-0 w-1/2 pointer-events-auto bg-white/5 border-r border-white/5"
         onTouchMove={handleJoystickMove} 
         onTouchEnd={resetJoystick} 
       />
 
-      {/* THE JOYSTICK (Pinned to joystickPos) */}
+      {/* 2. RIGHT SIDE - LOOK INTERACTION AREA */}
+      <div 
+        className="absolute inset-y-0 right-0 w-1/2 pointer-events-auto"
+        onTouchStart={(e) => { touchStart.current = { x: e.touches[0].clientX, y: e.touches[0].clientY }; }}
+        onTouchMove={handleLookMove} 
+      />
+
+      {/* 3. THE JOYSTICK BASE (FORCE 140px size) */}
       <div 
         style={{ 
-          left: joystickPos.x, 
-          top: joystickPos.y, 
+          left: `${basePos.x}px`, 
+          top: `${basePos.y}px`, 
           transform: 'translate(-50%, -50%)',
-          position: 'absolute'
+          width: '140px',
+          height: '140px'
         }}
-        className="w-32 h-32 rounded-full bg-stone-900/80 border-2 border-orange-500/50 flex items-center justify-center pointer-events-none shadow-2xl"
+        className="absolute rounded-full bg-stone-900/80 border-2 border-orange-500/40 flex items-center justify-center pointer-events-none shadow-2xl"
       >
+        {/* Inner Ring */}
+        <div className="absolute inset-4 rounded-full border border-white/5" />
+        
+        {/* 4. THE JOYSTICK THUMB (FORCE 64px size) */}
         <div 
           ref={thumbRef} 
-          className="w-16 h-16 rounded-full bg-orange-600 border-2 border-orange-400 shadow-xl"
-        />
+          style={{ width: '64px', height: '64px' }}
+          className="rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-orange-300 shadow-xl flex items-center justify-center"
+        >
+          <div className="w-4 h-4 rounded-full bg-white/20" />
+        </div>
       </div>
 
-      {/* JUMP BUTTON (Bottom Right) */}
+      {/* 5. THE JUMP BUTTON (FORCE 96px size) */}
       <div className="absolute bottom-12 right-12 pointer-events-auto">
         <button 
           onPointerDown={() => setMove("jump", true)} 
           onPointerUp={() => setMove("jump", false)}
-          className="w-24 h-24 rounded-full bg-orange-600/40 border-2 border-orange-500 flex items-center justify-center active:scale-90 active:bg-orange-600 transition-all shadow-lg shadow-orange-900/20"
+          style={{ width: '96px', height: '96px' }}
+          className="rounded-full bg-orange-600/30 border-2 border-orange-500 flex items-center justify-center active:scale-90 active:bg-orange-600 transition-all shadow-lg"
         >
-          <span className="text-white font-black text-xs italic uppercase">Jump</span>
+          <span className="text-white font-black text-[10px] uppercase italic">Jump</span>
         </button>
       </div>
+
     </div>
   );
 }
