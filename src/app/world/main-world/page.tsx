@@ -89,6 +89,24 @@ export default function MainWorldPage() {
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
+
+{/* Place your first house */}
+  <House 
+    modelPath="/modern_house.glb" 
+    position={[10, 0, -20]} 
+    rotation={[0, Math.PI / 2, 0]} 
+    scale={1.5}
+  />
+
+  {/* Place a second house somewhere else */}
+  <House 
+    modelPath="/cottage.glb" 
+    position={[-15, 0, -30]} 
+    rotation={[0, 0, 0]} 
+  />
+
+
+            
             <Player />
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
