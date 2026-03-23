@@ -8,6 +8,7 @@ import { useStore } from "../../../hooks/useStore";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
+import House from "../../house/House";
 
 function WorldFloor() {
   const { scene } = useGLTF("/floor.glb");
