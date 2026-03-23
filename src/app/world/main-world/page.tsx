@@ -42,6 +42,8 @@ export default function MainWorldPage() {
         {/* The Loading Screen handles its own visibility based on useProgress */}
         <LoadingScreen />
 
+        <MobileControls /> {/* Add this here */}
+
         <Canvas shadows>
           <Suspense fallback={null}>
             <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
