@@ -1,5 +1,4 @@
-
-  jump: boolean;import { create } from 'zustand';
+import { create } from 'zustand';
 
 interface GameState {
   forward: boolean;
@@ -16,5 +15,5 @@ export const useStore = create<GameState>((set) => ({
   left: false,
   right: false,
   jump: false,
-  setMove: (direction, value) => set((state) => ({ [direction]: value })),
+  setMove: (direction, value) => set((state) => ({ ...state, [direction]: value })),
 }));
