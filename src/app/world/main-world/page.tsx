@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { 
   PointerLockControls, 
@@ -15,7 +15,6 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 
-// 1. Ensure these keys match exactly what Player.tsx expects
 const keyMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW", "w", "W"] },
   { name: "backward", keys: ["ArrowDown", "KeyS", "s", "S"] },
@@ -34,17 +33,26 @@ function WorldFloor() {
 }
 
 export default function MainWorldPage() {
-  const mapSize = 450000; 
+  const [isMobile, setIsMobile] = useState(false);
+  const mapSize = 450000;
   const wallHeight = 1000;
 
+  useEffect(() => {
+    // Detect device type on mount
+    const checkDevice = () => {
+      setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    };
+    checkDevice();
+  }, []);
+
   return (
-    // KeyboardControls MUST wrap the entire return to catch events
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
         
-        {/* UI Layers (Must have pointer-events-none where needed) */}
         <LoadingScreen />
-        <MobileControls />
+
+        {/* CONDITION: Only show and use MobileControls if a touch device is detected */}
+        {isMobile && <MobileControls />}
 
         <Canvas shadows>
           <Suspense fallback={null}>
@@ -69,7 +77,8 @@ export default function MainWorldPage() {
               </RigidBody>
             </Physics>
 
-            <PointerLockControls />
+            {/* PointerLock is only for Desktop (Laptop) users with a mouse */}
+            {!isMobile && <PointerLockControls />}
           </Suspense>
         </Canvas>
       </div>
