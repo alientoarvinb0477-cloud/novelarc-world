@@ -13,13 +13,14 @@ import {
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
-import MobileControls from "../../../components/world/MobileControls"; // <--- ADD THIS LINE
+import MobileControls from "../../../components/world/MobileControls";
 
+// 1. Ensure these keys match exactly what Player.tsx expects
 const keyMap = [
-  { name: "forward", keys: ["ArrowUp", "KeyW"] },
-  { name: "backward", keys: ["ArrowDown", "KeyS"] },
-  { name: "left", keys: ["ArrowLeft", "KeyA"] },
-  { name: "right", keys: ["ArrowRight", "KeyD"] },
+  { name: "forward", keys: ["ArrowUp", "KeyW", "w", "W"] },
+  { name: "backward", keys: ["ArrowDown", "KeyS", "s", "S"] },
+  { name: "left", keys: ["ArrowLeft", "KeyA", "a", "A"] },
+  { name: "right", keys: ["ArrowRight", "KeyD", "d", "D"] },
   { name: "jump", keys: ["Space"] },
 ];
 
@@ -37,13 +38,13 @@ export default function MainWorldPage() {
   const wallHeight = 1000;
 
   return (
+    // KeyboardControls MUST wrap the entire return to catch events
     <KeyboardControls map={keyMap}>
       <div className="w-full h-screen bg-black relative">
         
-        {/* The Loading Screen handles its own visibility based on useProgress */}
+        {/* UI Layers (Must have pointer-events-none where needed) */}
         <LoadingScreen />
-
-        <MobileControls /> {/* Add this here */}
+        <MobileControls />
 
         <Canvas shadows>
           <Suspense fallback={null}>
@@ -59,7 +60,7 @@ export default function MainWorldPage() {
               <WorldFloor />
               <Player />
 
-              {/* --- INVISIBLE BARRIERS --- */}
+              {/* Barriers */}
               <RigidBody type="fixed">
                 <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, -mapSize]} />
                 <CuboidCollider args={[mapSize, wallHeight, 10]} position={[0, wallHeight / 2, mapSize]} />
