@@ -4,10 +4,10 @@ import * as THREE from "three";
 import { useRef, useMemo } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { RigidBody, RapierRigidBody, CapsuleCollider } from "@react-three/rapier";
-import { useStore } from "../hooks/useStore"; // Import our new store
+import { useStore } from "../../hooks/useStore";
 
-const MOVE_SPEED = 20; 
-const JUMP_FORCE = 8;
+const MOVE_SPEED = 30;
+const JUMP_FORCE = 10;
 
 export default function Player() {
   const rb = useRef<RapierRigidBody>(null);
@@ -28,7 +28,7 @@ export default function Player() {
     const position = rb.current.translation();
     camera.position.set(position.x, position.y + 2.5, position.z);
 
-    // Calculate movement
+    // Calculate movement based on Store state
     frontVector.set(0, 0, Number(backward) - Number(forward));
     sideVector.set(Number(left) - Number(right), 0, 0);
 
@@ -47,13 +47,19 @@ export default function Player() {
       true
     );
 
-    if (jump && Math.abs(currentVelocity.y) < 0.05) {
+    if (jump && Math.abs(currentVelocity.y) < 0.1) {
       rb.current.setLinvel({ x: currentVelocity.x, y: JUMP_FORCE, z: currentVelocity.z }, true);
     }
   });
 
   return (
-    <RigidBody ref={rb} colliders={false} position={[0, 5, 0]} enabledRotations={[false, false, false]}>
+    <RigidBody 
+      ref={rb} 
+      colliders={false} 
+      position={[0, 10, 0]} 
+      enabledRotations={[false, false, false]}
+      canSleep={false}
+    >
       <CapsuleCollider args={[1.2, 0.6]} />
     </RigidBody>
   );
