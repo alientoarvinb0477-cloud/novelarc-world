@@ -1,4 +1,5 @@
-import { create } from 'zustand';
+
+  jump: boolean;import { create } from 'zustand';
 
 interface GameState {
   forward: boolean;
