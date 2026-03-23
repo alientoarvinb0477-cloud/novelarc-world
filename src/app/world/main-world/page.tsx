@@ -92,17 +92,10 @@ export default function MainWorldPage() {
 
 {/* Place your first house */}
   <House 
-    modelPath="/modern_house.glb" 
-    position={[10, 0, -20]} 
-    rotation={[0, Math.PI / 2, 0]} 
-    scale={1.5}
-  />
-
-  {/* Place a second house somewhere else */}
-  <House 
-    modelPath="/cottage.glb" 
-    position={[-15, 0, -30]} 
-    rotation={[0, 0, 0]} 
+    id="modern-villa" 
+    modelPath="/house_model.glb" 
+    position={[20, 0, -20]} 
+    doorOffset={[0, 1, 3]} // Move the sensor to where the door is
   />
 
 
