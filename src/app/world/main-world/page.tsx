@@ -12,6 +12,7 @@ import {
 } from "@react-three/drei";
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
+import LoadingScreen from "../../../components/world/LoadingScreen";
 
 // Keyboard mapping for the Player controller
 const keyMap = [
@@ -38,6 +39,8 @@ export default function MainWorldPage() {
 
   return (
     <KeyboardControls map={keyMap}>
+      <div className="w-full h-screen bg-black relative">
+        <LoadingScreen /> {/* This sits on top of everything */}
       <div className="w-full h-screen bg-black relative">
         <Canvas shadows>
           <Suspense fallback={null}>
