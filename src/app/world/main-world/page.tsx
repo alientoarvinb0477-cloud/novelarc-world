@@ -92,11 +92,9 @@ export default function MainWorldPage() {
             <WorldFloor />
 
 {/* Place your first house */}
-  <House 
-    id="modern-villa" 
-    modelPath="/house_model.glb" 
-    position={[20, 0, -20]} 
-    doorOffset={[0, 1, 3]} // Move the sensor to where the door is
+<House 
+    id="starter-home" 
+    position={[15, 0, -15]} 
   />
 
 
