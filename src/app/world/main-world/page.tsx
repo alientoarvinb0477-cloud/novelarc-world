@@ -13,6 +13,7 @@ import {
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
+import MobileControls from "../../../components/world/MobileControls"; // <--- ADD THIS LINE
 
 const keyMap = [
   { name: "forward", keys: ["ArrowUp", "KeyW"] },
