@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useStore } from "../../hooks/useStore";
+import { useRouter } from "next/navigation"; // Added for page transitions
 
 export default function MobileControls() {
   const [isMobile, setIsMobile] = useState(false);
@@ -9,12 +10,13 @@ export default function MobileControls() {
   const [basePos, setBasePos] = useState({ x: 140, y: 0 });
   const [showJoystick, setShowJoystick] = useState(false);
 
+  const router = useRouter(); // Initialize router
   const setMove = useStore((state) => state.setMove);
-  const thumbRef = useRef<HTMLDivElement>(null);
   
   // Interaction Refs
   const lastTap = useRef(0);
   const touchStart = useRef({ x: 0, y: 0 });
+  const thumbRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -31,7 +33,6 @@ export default function MobileControls() {
 
   if (!isMobile) return null;
 
-  // Portrait Lock
   if (isPortrait) {
     return (
       <div className="fixed inset-0 z-[9999] bg-stone-950 flex flex-col items-center justify-center p-10 text-center">
@@ -48,35 +49,43 @@ export default function MobileControls() {
 
     // 1. LEFT SIDE: Joystick Start
     if (touch.clientX < window.innerWidth / 2) {
-      setJoystickPos(touch.clientX, touch.clientY);
+      setBasePos({ x: touch.clientX, y: touch.clientY });
       setShowJoystick(true);
     } 
     // 2. RIGHT SIDE: Tap Logic (Jump & Enter)
     else {
       touchStart.current = { x: touch.clientX, y: touch.clientY };
       
-      // Double Tap check (Jump)
-      if (now - lastTap.current < 300) {
+      const timeSinceLastTap = now - lastTap.current;
+
+      // DOUBLE TAP (Jump)
+      if (timeSinceLastTap < 300) {
         setMove("jump", true);
-        setTimeout(() => setMove("jump", false), 100); // Quick reset for jump
+        setTimeout(() => setMove("jump", false), 100);
       } 
-      // Single Tap (Enter/Interact)
+      // SINGLE TAP (Enter/Interact)
       else {
-        console.log("Interact/Enter Triggered"); 
-        // You can add an 'interact' state to your store if needed
+        // Wait 300ms to make sure a second tap isn't coming
+        setTimeout(() => {
+          // If 300ms passed and no new tap happened, it's a single tap
+          if (Date.now() - lastTap.current >= 300) {
+            // Check store to see if player is near a door
+            const doorId = useStore.getState().nearDoor;
+            
+            if (doorId) {
+              console.log("Entering house:", doorId);
+              router.push(`/house/${doorId}`); // Navigate to the interior page
+            }
+          }
+        }, 300);
       }
       lastTap.current = now;
     }
   };
 
-  const setJoystickPos = (x: number, y: number) => {
-    setBasePos({ x, y });
-  };
-
   const handleTouchMove = (e: React.TouchEvent) => {
     const touch = e.touches[0];
 
-    // JOYSTICK MOVEMENT (If touch is on left side or dragging joystick)
     if (showJoystick) {
       let dx = touch.clientX - basePos.x;
       let dy = touch.clientY - basePos.y;
@@ -99,7 +108,6 @@ export default function MobileControls() {
       setMove("right", dx > threshold);
     } 
     
-    // LOOK MOVEMENT (If touch is on right side)
     if (touch.clientX > window.innerWidth / 2) {
       const deltaX = touch.clientX - touchStart.current.x;
       const deltaY = touch.clientY - touchStart.current.y;
@@ -149,7 +157,7 @@ export default function MobileControls() {
         />
       </div>
 
-      {/* ACTION HINT (Small visual cue for Tap zones) */}
+      {/* ACTION HINT */}
       <div className="absolute bottom-4 right-4 text-[8px] text-white/20 uppercase tracking-[0.3em] pointer-events-none">
         Tap: Enter • 2x Tap: Jump
       </div>
