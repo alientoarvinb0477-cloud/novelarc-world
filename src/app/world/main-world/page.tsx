@@ -9,7 +9,6 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 
-// Move the GLTF loading to its own component to prevent build errors
 function WorldFloor() {
   const { scene } = useGLTF("/floor.glb");
   return (
@@ -42,19 +41,42 @@ function KeyboardListener() {
 export default function MainWorldPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
   const mapSize = 450000;
-  
+
   useEffect(() => {
     setIsMounted(true);
     setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
   }, []);
 
+  const handleStart = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) element.requestFullscreen();
+    setHasStarted(true);
+  };
+
   if (!isMounted) return <div className="w-full h-screen bg-black" />;
 
   return (
-    <div className="w-full h-screen bg-black relative">
+    <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
       <KeyboardListener />
       <LoadingScreen />
+      
+      {/* 1. START OVERLAY (Ensures Fullscreen & Controller Visibility) */}
+      {!hasStarted && isMobile && (
+        <div className="fixed inset-0 z-[500] bg-black flex flex-col items-center justify-center p-6 text-center">
+          <h1 className="text-orange-500 font-black text-3xl mb-2 tracking-tighter italic">NOVELARC</h1>
+          <p className="text-stone-500 text-xs mb-8 uppercase tracking-widest">Optimizing Mobile Interface...</p>
+          <button 
+            onClick={handleStart}
+            className="px-12 py-4 bg-orange-600 text-white font-bold rounded-full shadow-[0_0_40px_rgba(234,88,12,0.3)] active:scale-95 transition-all"
+          >
+            ENTER WORLD
+          </button>
+        </div>
+      )}
+
+      {/* 2. CONTROLLERS */}
       <MobileControls />
 
       <Canvas shadows>
@@ -66,11 +88,8 @@ export default function MainWorldPage() {
           <pointLight position={[10, 10, 10]} castShadow />
 
           <Physics gravity={[0, -9.81, 0]}>
-            {/* The floor will only attempt to load in the browser now */}
             <WorldFloor />
-            
             <Player />
-            
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, mapSize]} />
