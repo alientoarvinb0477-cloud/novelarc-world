@@ -1,28 +1,44 @@
 "use client";
 
-import React from "react";
-import { useGLTF } from "@react-three/drei";
-import { RigidBody } from "@react-three/rapier";
+import React, { useState } from "react";
+import { useGLTF, Text } from "@react-three/drei";
+import { RigidBody, CuboidCollider } from "@react-three/rapier";
+import { useStore } from "../../hooks/useStore";
 
-interface HouseProps {
-  modelPath: string;
-  position?: [number, number, number];
-  rotation?: [number, number, number];
-  scale?: number;
-}
-
-export default function House({ 
-  modelPath, 
-  position = [0, 0, 0], 
-  rotation = [0, 0, 0], 
-  scale = 1 
-}: HouseProps) {
-  // Load the specific house model
+export default function House({ id, modelPath, position, doorOffset = [0, 0, 2] }: any) {
   const { scene } = useGLTF(modelPath);
+  const setNearDoor = useStore((state) => state.setNearDoor);
+  const [showHint, setShowHint] = useState(false);
 
   return (
-    <RigidBody type="fixed" colliders="trimesh" position={position} rotation={rotation}>
-      <primitive object={scene.clone()} scale={scale} />
-    </RigidBody>
+    <group position={position}>
+      {/* THE HOUSE MODEL */}
+      <RigidBody type="fixed" colliders="trimesh">
+        <primitive object={scene.clone()} />
+      </RigidBody>
+
+      {/* THE DOOR SENSOR */}
+      <RigidBody
+        type="fixed"
+        colliders={false}
+        position={doorOffset}
+        onIntersectionEnter={() => {
+          setNearDoor(id); // Tell the store we are at THIS house
+          setShowHint(true);
+        }}
+        onIntersectionExit={() => {
+          setNearDoor(null); // Clear the store when we walk away
+          setShowHint(false);
+        }}
+      >
+        <CuboidCollider args={[1.5, 2, 1.5]} sensor />
+        
+        {showHint && (
+          <Text position={[0, 3, 0]} fontSize={0.4} color="orange" font="/fonts/bold.ttf">
+            TAP TO ENTER
+          </Text>
+        )}
+      </RigidBody>
+    </group>
   );
 }
