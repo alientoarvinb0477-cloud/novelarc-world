@@ -2,7 +2,7 @@
 
 import { useProgress } from "@react-three/drei";
 import { useEffect, useState } from "react";
-import styles from "../../design/loading.module.css"; // Adjust path if needed
+import styles from "../../app/design/loading.module.css";
 
 export default function LoadingScreen() {
   const { progress, active } = useProgress();
