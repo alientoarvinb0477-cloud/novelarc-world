@@ -2,6 +2,7 @@
 
 import { useProgress } from "@react-three/drei";
 import { useEffect, useState } from "react";
+import styles from "../../design/loading.module.css"; // Adjust path if needed
 
 export default function LoadingScreen() {
   const { progress, active } = useProgress();
@@ -17,17 +18,15 @@ export default function LoadingScreen() {
   if (!shown) return null;
 
   return (
-    <div className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-1000 ${!active ? 'opacity-0' : 'opacity-100'}`}>
+    <div className={`${styles.overlay} ${!active ? styles.hidden : styles.visible}`}>
       
-      {/* Background Texture */}
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] -z-10" />
+      <div className={styles.backgroundTexture} />
 
-      <div className="flex flex-col items-center justify-center space-y-8">
+      <div className={styles.contentWrapper}>
         
         {/* --- CENTRAL LOADING CIRCLE --- */}
-        <div className="relative flex items-center justify-center w-32 h-32">
-          {/* Static Background Ring */}
-          <svg className="absolute w-full h-full rotate-[-90deg]">
+        <div className={styles.ringContainer}>
+          <svg className={styles.svg}>
             <circle
               cx="64"
               cy="64"
@@ -35,9 +34,8 @@ export default function LoadingScreen() {
               stroke="currentColor"
               strokeWidth="2"
               fill="transparent"
-              className="text-stone-900"
+              className={styles.bgCircle}
             />
-            {/* Animated Progress Ring */}
             <circle
               cx="64"
               cy="64"
@@ -48,29 +46,26 @@ export default function LoadingScreen() {
               strokeDasharray={377}
               strokeDashoffset={377 - (377 * progress) / 100}
               strokeLinecap="round"
-              className="text-orange-600 transition-all duration-500 ease-out shadow-[0_0_15px_rgba(234,88,12,0.5)]"
+              className={styles.progressCircle}
             />
           </svg>
 
-          {/* Percentage in Center */}
-          <div className="flex flex-col items-center">
-            <span className="text-white font-mono text-xl font-black tracking-tighter">
-              {Math.round(progress)}%
-            </span>
+          <div className={styles.percentage}>
+            {Math.round(progress)}%
           </div>
         </div>
 
         {/* --- STATUS TEXT --- */}
-        <div className="text-center space-y-2">
-          <p className="text-orange-500 font-sans text-[10px] font-black uppercase tracking-[0.6em] animate-pulse">
+        <div className={styles.statusContainer}>
+          <p className={styles.mainStatus}>
             {active ? "Initialising Grid" : "System Ready"}
           </p>
-          <div className="flex items-center justify-center gap-2">
-            <div className="h-[1px] w-4 bg-stone-800" />
-            <p className="text-stone-600 font-sans text-[7px] uppercase tracking-[0.3em]">
+          <div className={styles.subStatusWrapper}>
+            <div className={styles.line} />
+            <p className={styles.nodeInfo}>
               Node: ARC-V1 • Valenzuela
             </p>
-            <div className="h-[1px] w-4 bg-stone-800" />
+            <div className={styles.line} />
           </div>
         </div>
 
