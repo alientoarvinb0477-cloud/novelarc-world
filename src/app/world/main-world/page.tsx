@@ -9,6 +9,7 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import House from "../../house/House";
+import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
   const { scene } = useGLTF("/floor.glb");
@@ -62,40 +63,14 @@ export default function MainWorldPage() {
     <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
       <KeyboardListener />
       <LoadingScreen />
+
+      {/* ✅ USE THIS INSTEAD ✅ */}
+<StartOverlay 
+  show={isMobile && !hasStarted} 
+  onStart={handleStart} 
+/>
       
-{/* 1. START OVERLAY - Fixed Centering for Mobile */}
-{!hasStarted && isMobile && (
-  <div className="fixed inset-0 z-[500] bg-black flex flex-col items-center justify-center p-0 text-center touch-none overflow-hidden">
-    
-    {/* Background Glow to make it feel deep */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#7c2d1233,_black)] -z-10" />
 
-    <div className="flex flex-col items-center justify-center w-full h-full max-w-xs mx-auto">
-      <h1 className="text-orange-500 font-black text-5xl mb-2 tracking-tighter italic animate-pulse">
-        NOVELARC
-      </h1>
-      
-      <div className="flex items-center gap-3 mb-8">
-        <div className="h-[1px] w-8 bg-stone-800" />
-        <p className="text-stone-500 text-[10px] uppercase tracking-[0.4em]">
-          Mobile Interface
-        </p>
-        <div className="h-[1px] w-8 bg-stone-800" />
-      </div>
-
-      <button 
-        onClick={handleStart}
-        className="w-full py-5 bg-orange-600 text-white font-black uppercase text-xs tracking-[0.2em] rounded-2xl shadow-[0_20px_50px_rgba(234,88,12,0.3)] active:scale-95 transition-all"
-      >
-        ENTER WORLD
-      </button>
-
-      <p className="mt-6 text-[8px] text-stone-600 uppercase tracking-widest">
-        Best experienced in Landscape
-      </p>
-    </div>
-  </div>
-)}
 
       {/* 2. CONTROLLERS */}
       <MobileControls />
