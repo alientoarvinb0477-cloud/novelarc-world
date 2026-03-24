@@ -1,0 +1,86 @@
+.container {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  touch-action: none;
+}
+
+/* The "Notification" Box */
+.notification {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+  animation: fadeIn 0.8s ease-out;
+}
+
+.title {
+  color: #ea580c; /* orange-600 */
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -0.1em;
+  text-transform: uppercase;
+}
+
+.statusLine {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.line {
+  height: 1px;
+  flex-grow: 1;
+  background-color: #1c1917; /* stone-900 */
+}
+
+.statusText {
+  color: #57534e; /* stone-600 */
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4em;
+  white-space: nowrap;
+}
+
+.enterButton {
+  width: 100%;
+  padding: 1.25rem;
+  background-color: #ea580c;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  box-shadow: 0 15px 30px rgba(234, 88, 12, 0.2);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.enterButton:active {
+  transform: scale(0.96);
+  background-color: #fb923c;
+}
+
+.hint {
+  color: #44403c;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
