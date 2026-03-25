@@ -1,20 +1,29 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import styles from "../design/about.module.css";
-import desktopStyles from "../design/desktop.module.css"; // Reuse the button style
 
 export default function AboutSystemPage() {
+  const router = useRouter();
+
   return (
     <main className={styles.container}>
-      <div className={styles.contentWrapper}>
-        
-        <span className={styles.label}>The Novelarc Protocol</span>
+      {/* REPLICATED TOP RIGHT BUTTON */}
+      <button 
+        onClick={() => router.push("/world/main-world")}
+        className="fixed top-8 right-8 z-[100] px-6 py-2 border border-white/20 text-white text-[9px] uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-500 font-sans font-bold"
+      >
+        Get Started
+      </button>
 
+      <div className={styles.contentWrapper}>
+        <span className={styles.label}>The Novelarc Protocol</span>
         <h1 className={styles.mainTitle}>
           Visualizing the future of <br/> Philippine Living.
         </h1>
+        
+        {/* ... rest of your grid content ... */}
 
         <div className={styles.grid}>
           
