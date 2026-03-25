@@ -3,25 +3,25 @@
 import Link from "next/link";
 import Image from "next/image";
 import styles from "../design/desktop.module.css";
-// Update this to your actual image name in /public
+// Ensure this image exists in your /public folder
 import HouseImage from "../../../public/image_1.png"; 
 
 export default function DesktopView() {
   return (
     <main className={styles.container}>
-      
-      {/* 1. Background */}
+      {/* Background Layer */}
       <div className={styles.backgroundWrapper}>
         <Image 
           src={HouseImage}
-          alt="Novelarc Digital Architecture"
+          alt="Novelarc Luxury Digital Interior"
           fill
           priority
           className={styles.backgroundImage}
         />
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
       </div>
 
-      {/* 2. Centered Content */}
+      {/* Elegant Content Overlay */}
       <section className={styles.content}>
         <h1 className={styles.title}>
           DIGITAL ARCHITECTURE<br />
@@ -40,10 +40,10 @@ export default function DesktopView() {
         </Link>
       </section>
 
-      {/* 3. Subtle Footer Overlay */}
-      <footer className="absolute bottom-8 w-full flex justify-center z-20 opacity-40">
-        <div className="font-sans text-[8px] font-bold uppercase tracking-[1em] text-white">
-          ARC-V1 • VALENZUELA • 2026
+      {/* Floating Footer */}
+      <footer className="absolute bottom-10 w-full flex justify-center z-20 opacity-30">
+        <div className="font-sans text-[8px] font-bold uppercase tracking-[1.2em] text-white">
+          ARC-V1 • 2026
         </div>
       </footer>
     </main>
