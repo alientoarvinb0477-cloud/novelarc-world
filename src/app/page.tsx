@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // To handle the page change
+import { useRouter } from "next/navigation";
 import DesktopView from "./landingpage/DesktopView";
 import MobileView from "./landingpage/MobileView";
+import styles from "./design/desktop.module.css";
 
 export default function LandingPage() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
@@ -12,39 +13,36 @@ export default function LandingPage() {
   useEffect(() => {
     const checkDevice = () => {
       const mobile = window.innerWidth <= 768 || ('ontouchstart' in window);
-      setTimeout(() => setIsMobile(mobile), 400);
+      setIsMobile(mobile);
     };
 
     checkDevice();
     window.addEventListener("resize", checkDevice);
 
-    // --- SCROLL TO NEXT PAGE LOGIC ---
-    // ... inside useEffect for handleScroll ...
-const handleScroll = (e: WheelEvent) => {
-  if (e.deltaY > 50) { 
-    // This now sends them to your explanation/system page
-    router.push("/about-system"); 
-  }
-};
-
-    // Only add scroll listener on Desktop
-    if (isMobile === false) {
-      window.addEventListener("wheel", handleScroll);
-    }
+    // --- 3 SECOND AUTOMATIC TIMER ---
+    const timer = setTimeout(() => {
+      router.push("/about-system");
+    }, 4500); // 4.5s gives the user time to appreciate the fade-in before it moves
 
     return () => {
       window.removeEventListener("resize", checkDevice);
-      window.removeEventListener("wheel", handleScroll);
+      clearTimeout(timer);
     };
-  }, [isMobile, router]);
+  }, [router]);
 
-  if (isMobile === null) {
-    return (
-      <div className="h-screen w-full bg-black flex flex-col items-center justify-center">
-        <div className="w-10 h-10 border-2 border-stone-800 border-t-white rounded-full animate-spin" />
-      </div>
-    );
-  }
+  if (isMobile === null) return <div className="bg-black h-screen" />;
 
-  return isMobile ? <MobileView /> : <DesktopView />;
+  return (
+    <div className="relative">
+      {/* GLOBAL GET STARTED BUTTON (Top Right) */}
+      <button 
+        onClick={() => router.push("/world/main-world")}
+        className="fixed top-8 right-8 z-[100] px-6 py-2 border border-white/20 text-white text-[9px] uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-500 font-sans font-bold"
+      >
+        Get Started
+      </button>
+
+      {isMobile ? <MobileView /> : <DesktopView />}
+    </div>
+  );
 }
