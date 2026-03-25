@@ -2,57 +2,69 @@
 
 .container {
   width: 100%;
-  height: 100vh; /* Force it to match the browser height exactly */
-  background-color: #f2f2f2; /* Professional Light Gray */
+  height: 100vh;
+  background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Centers content vertically */
+  justify-content: center;
   padding: 2rem;
   box-sizing: border-box;
-  overflow: hidden; /* Prevents unwanted scrolling if content fits */
+  overflow: hidden;
+  position: relative;
 }
 
 .contentWrapper {
-  max-width: 1100px;
+  max-width: 1000px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: fadeInContent 1.5s ease-out forwards;
-}
-
-.label {
-  font-family: 'Montserrat', sans-serif;
-  color: #000000;
-  font-size: clamp(8px, 1vw, 10px);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.8em;
-  margin-bottom: 2rem;
-  opacity: 0.5;
+  animation: fadeInContent 1.2s ease-out forwards;
 }
 
 .mainTitle {
   font-family: 'Cormorant Garamond', serif;
   color: #000000;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
   font-style: italic;
   font-weight: 300;
   text-align: center;
   line-height: 1.1;
-  margin-bottom: 3.5rem;
+  margin-bottom: 2.5rem; /* Space between Title and Button */
   letter-spacing: -0.01em;
 }
 
+/* --- Enter the World Button --- */
+.enterButton {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  padding: 1.4rem 3.5rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.enterButton:hover {
+  background-color: #333333;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
 .grid {
-  display: flex; /* Using flex for better centering than grid */
-  gap: 4rem;
+  display: flex;
+  gap: 5rem;
   width: 100%;
-  max-width: 900px;
+  max-width: 850px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 3rem;
-  margin-bottom: 4rem;
+  margin-top: 2rem;
 }
 
 .section {
@@ -74,46 +86,28 @@
   color: #000000;
   font-size: 14px;
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.8;
   opacity: 0.7;
 }
 
-/* --- New "Enter the World of 3D" Button --- */
-.enterButton {
-  background-color: #000000;
-  color: #ffffff;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  padding: 1.25rem 3rem;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.4s ease;
-}
-
-.enterButton:hover {
-  background-color: #333333;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
 @keyframes fadeInContent {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive fix for smaller screens */
+/* Tablet/Mobile cleanup */
 @media (max-width: 768px) {
   .container {
     height: auto;
     min-height: 100vh;
-    padding: 4rem 2rem;
+    padding: 5rem 2rem;
   }
   .grid {
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
+    text-align: center;
+  }
+  .mainTitle {
+    font-size: 3rem;
   }
 }
