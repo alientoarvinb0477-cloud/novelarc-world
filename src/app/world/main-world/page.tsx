@@ -109,5 +109,3 @@ export default function MainWorldPage() {
     </div>
   );
 }
-
-ok lets make it
