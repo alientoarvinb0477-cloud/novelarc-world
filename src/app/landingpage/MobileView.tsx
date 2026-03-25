@@ -1,36 +1,48 @@
 "use client";
 
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import styles from '../design/mobile.module.css'; // Import the mobile-specific CSS
+import Link from "next/link";
+import Image from "next/image";
+import styles from "../design/mobile.module.css";
+// Using the same background for brand consistency
+import HouseImage from "../../../public/image_1.png"; 
 
 export default function MobileView() {
   return (
     <main className={styles.container}>
-      {/* Background stays in JSX for easy gradient control or move to CSS */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#7c2d124d,_black)] -z-10" />
-
-      <header className={styles.header}>
-        <h1 className={styles.title}>
-          NOVEL<br />ARC
-        </h1>
-        <p className={styles.subtitle}>Mobile Interface</p>
-      </header>
-
-      <div className={styles.buttonArea}>
-        <Link href="/world/main-world" className="w-full">
-          <button className={styles.actionButton}>
-            <span>Enter Journey</span>
-            <ArrowRight size={18} />
-          </button>
-        </Link>
-        <p className="text-[9px] text-stone-600 uppercase tracking-widest text-center">
-          Rotate for Landscape experience
-        </p>
+      {/* Background Layer */}
+      <div className={styles.backgroundWrapper}>
+        <Image 
+          src={HouseImage}
+          alt="Novelarc Mobile Experience"
+          fill
+          priority
+          className={styles.backgroundImage}
+        />
       </div>
 
-      <footer className={styles.footer}>
-        ARC-V1 • 2026
+      {/* Centered Elegant Content */}
+      <section className={styles.content}>
+        <h1 className={styles.title}>
+          NOVEL<br />
+          <span className={styles.titleItalic}>ARC</span>
+        </h1>
+        
+        <h2 className={styles.subtitle}>
+          Explore high-end digital architecture from your device.
+        </h2>
+        
+        <Link href="/world/main-world" className="w-full flex justify-center">
+          <button className={styles.button}>
+            Enter World
+          </button>
+        </Link>
+      </section>
+
+      {/* Minimal Footer */}
+      <footer className="absolute bottom-8 opacity-20">
+        <div className="text-[7px] font-bold uppercase tracking-[0.8em] text-white">
+          PHILIPPINES • 2026
+        </div>
       </footer>
     </main>
   );
