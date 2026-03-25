@@ -4,6 +4,8 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { PointerLockControls, Sky, Environment, PerspectiveCamera, useGLTF } from "@react-three/drei";
 import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
+import { EffectComposer, Vignette, Bloom, Noise } from "@react-three/postprocessing"; // Added Noise for "Film" feel
+
 import { useStore } from "../../../hooks/useStore";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
@@ -64,15 +66,11 @@ export default function MainWorldPage() {
       <KeyboardListener />
       <LoadingScreen />
 
-      {/* ✅ USE THIS INSTEAD ✅ */}
-<StartOverlay 
-  show={isMobile && !hasStarted} 
-  onStart={handleStart} 
-/>
-      
+      <StartOverlay 
+        show={isMobile && !hasStarted} 
+        onStart={handleStart} 
+      />
 
-
-      {/* 2. CONTROLLERS */}
       <MobileControls />
 
       <Canvas shadows>
@@ -85,15 +83,7 @@ export default function MainWorldPage() {
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
-
-{/* Place your first house */}
-<House 
-    id="starter-home" 
-    position={[15, 0, -15]} 
-  />
-
-
-            
+            <House id="starter-home" position={[15, 0, -15]} />
             <Player />
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
@@ -102,6 +92,22 @@ export default function MainWorldPage() {
               <CuboidCollider args={[10, 1000, mapSize]} position={[-mapSize, 500, 0]} />
             </RigidBody>
           </Physics>
+
+          {/* ─── ELEGANT POST-PROCESSING ─── */}
+          <EffectComposer disableNormalPass>
+            {/* Vignette: Luxury corner darkening */}
+            <Vignette eskil={false} offset={0.1} darkness={0.8} />
+            
+            {/* Bloom: Makes sunlight on houses glow softly */}
+            <Bloom 
+              intensity={0.4} 
+              luminanceThreshold={1.2} 
+              mipmapBlur 
+            />
+            
+            {/* Noise: Very subtle "Film Grain" to make it look like a high-end camera */}
+            <Noise opacity={0.03} />
+          </EffectComposer>
 
           {!isMobile && <PointerLockControls />}
         </Suspense>
