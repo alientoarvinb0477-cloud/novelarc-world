@@ -12,15 +12,16 @@
   justify-content: center;
 }
 
-/* --- Automatic Timer Bar --- */
+/* --- 1. Automatic Timer Bar --- */
 .topProgress {
   position: fixed;
   top: 0;
   left: 0;
-  height: 3px; /* Slightly thicker for visibility */
+  height: 3px;
   background-color: #fff;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Adds a premium glow */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
   z-index: 1000;
+  /* Matches your 4.5s router timer */
   animation: loadProgress 4.5s linear forwards;
 }
 
@@ -29,7 +30,7 @@
   100% { width: 100%; }
 }
 
-/* --- Background Image Layer --- */
+/* --- 2. Background Image Layer --- */
 .backgroundWrapper {
   position: absolute;
   inset: 0;
@@ -39,8 +40,8 @@
 .backgroundImage {
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.6) saturate(0.9);
-  /* Slow zoom effect to match the timer */
+  filter: brightness(0.55) saturate(0.85);
+  /* Slow cinematic zoom */
   animation: slowZoom 10s ease-out forwards;
 }
 
@@ -49,7 +50,7 @@
   to { transform: scale(1.1); }
 }
 
-/* --- Content Overlay --- */
+/* --- 3. Content Overlay (With Fade In & Out) --- */
 .content {
   position: relative;
   z-index: 10;
@@ -60,8 +61,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 2s ease-out;
-  transform: translateY(20px);
+  /* Fades in for 2s, then fades out starting at 4s */
+  animation: 
+    fadeIn 2s ease-out forwards,
+    fadeOut 0.5s ease-in forwards 4s;
 }
 
 .title {
@@ -77,72 +80,42 @@
 
 .titleItalic {
   font-style: italic;
-  color: #d6d3d1; /* stone-300 */
+  color: #d6d3d1;
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: #e7e5e4; /* stone-200 */
+  color: #e7e5e4;
   font-size: 0.8rem;
   font-weight: 300;
   text-transform: uppercase;
   letter-spacing: 0.4em;
   line-height: 2.2;
   max-width: 600px;
-  margin-bottom: 3.5rem;
 }
 
-/* --- Button Styling --- */
-.button {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
-  font-size: 0.65rem;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 0.5em;
-  padding: 1.25rem 3.5rem;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  cursor: pointer;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  backdrop-filter: blur(4px);
+/* --- 4. Footer Layer (Coordinated Fade Out) --- */
+.footerContainer {
+  position: absolute;
+  bottom: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+  opacity: 0.3;
+  animation: fadeOut 0.5s ease-in forwards 4s;
 }
 
-.button:hover {
-  background-color: #fff;
-  color: #000;
-  transform: translateY(-3px);
-  border-color: #fff;
-}
+/* --- 5. Shared Animations --- */
 
-/* --- Top-Right Skip Button (New) --- */
-.getStartedTop {
-  position: fixed;
-  top: 2.5rem;
-  right: 2.5rem;
-  z-index: 100;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 8px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.4em;
-  color: #fff;
-  padding: 0.8rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.5s ease;
-  animation: fadeIn 3s ease-in;
-}
-
-.getStartedTop:hover {
-  background: #fff;
-  color: #000;
-  border-color: #fff;
-}
-
+/* Standard Entrance */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Cinematic Exit */
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-15px); }
 }
