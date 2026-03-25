@@ -35,12 +35,6 @@ export default function LandingPage() {
   return (
     <div className="relative">
       {/* GLOBAL GET STARTED BUTTON (Top Right) */}
-      <button 
-        onClick={() => router.push("/world/main-world")}
-        className="fixed top-8 right-8 z-[100] px-6 py-2 border border-white/20 text-white text-[9px] uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all duration-500 font-sans font-bold"
-      >
-        Get Started
-      </button>
 
       {isMobile ? <MobileView /> : <DesktopView />}
     </div>
