@@ -11,10 +11,10 @@ export default function AboutSystemPage() {
 
   return (
     <main className={styles.container}>
-      {/* 1. TOP RIGHT GET STARTED BUTTON */}
+      {/* TOP RIGHT GET STARTED BUTTON */}
       <button 
         onClick={() => router.push("/world/main-world")}
-        className="fixed top-10 right-10 z-[100] px-6 py-2 border border-[#BCFD4C]/30 text-[#BCFD4C] text-[9px] uppercase tracking-[0.4em] hover:bg-[#BCFD4C] hover:text-[#6E6E6E] transition-all duration-500 font-sans font-bold"
+        className="fixed top-10 right-10 z-[100] px-6 py-2 border border-[#5ebec4]/40 text-[#5ebec4] text-[9px] uppercase tracking-[0.4em] hover:bg-[#5ebec4] hover:text-[#fdf5df] transition-all duration-500 font-sans font-bold"
       >
         Get Started
       </button>
@@ -45,12 +45,12 @@ export default function AboutSystemPage() {
           </div>
         </div>
 
-        {/* 2. CENTER INITIALIZE BUTTON */}
+        {/* CENTER INITIALIZE BUTTON */}
         <div className="mt-20">
           <Link href="/world/main-world">
             <button 
               className={desktopStyles.button} 
-              style={{ color: '#BCFD4C', borderColor: '#BCFD4C' }}
+              style={{ color: '#5ebec4', borderColor: '#5ebec4' }}
             >
               Initialize 3D World
             </button>
@@ -58,8 +58,8 @@ export default function AboutSystemPage() {
         </div>
       </div>
 
-      <footer className="mt-20 opacity-40">
-        <div className="text-[7px] font-bold uppercase tracking-[1em] text-[#BCFD4C]">
+      <footer className="mt-20 opacity-50">
+        <div className="text-[7px] font-bold uppercase tracking-[1em] text-[#5ebec4]">
           ARCHITECTURE • INTERIOR • SELECTION
         </div>
       </footer>
