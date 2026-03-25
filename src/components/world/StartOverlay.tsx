@@ -11,16 +11,15 @@ interface StartOverlayProps {
 export default function StartOverlay({ onStart, show }: StartOverlayProps) {
   const [isclosing, setIsClosing] = useState(false);
 
-  // If the parent says don't show, and we aren't in the middle of closing, return null
   if (!show && !isclosing) return null;
 
   const handleButtonClick = () => {
     setIsClosing(true);
-    // Wait for the CSS transition (0.8s) before fully telling the parent we started
+    // 1.5s delay to match the slower, more cinematic fade out
     setTimeout(() => {
       onStart();
-      setIsClosing(false); // Reset for next time if needed
-    }, 800);
+      setIsClosing(false);
+    }, 1500);
   };
 
   return (
@@ -30,7 +29,7 @@ export default function StartOverlay({ onStart, show }: StartOverlayProps) {
         
         <div className={styles.statusLine}>
           <div className={styles.line} />
-          <span className={styles.statusText}>System Boot</span>
+          <span className={styles.statusText}>Architecture Ready</span>
           <div className={styles.line} />
         </div>
 
@@ -39,11 +38,11 @@ export default function StartOverlay({ onStart, show }: StartOverlayProps) {
           onClick={handleButtonClick}
           disabled={isclosing}
         >
-          {isclosing ? "INITIALIZING..." : "Initialize World"}
+          {isclosing ? "Initializing..." : "Explore Interior"}
         </button>
 
         <p className={styles.hint}>
-          Landscape Orientation Recommended
+          Best viewed in Landscape orientation
         </p>
       </div>
     </div>
