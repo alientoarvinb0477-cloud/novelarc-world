@@ -2,67 +2,93 @@
 
 import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import styles from "../design/about.module.css";
-import desktopStyles from "../design/desktop.module.css";
 
 export default function AboutSystemPage() {
-  const router = useRouter();
-
   return (
-    <main className={styles.container}>
-      {/* BEAUTIFIED TOP RIGHT BUTTON */}
-      <button 
-        onClick={() => router.push("/world/main-world")}
-        className={styles.topRightBtn}
+    <main 
+      className={styles.container} 
+      style={{
+        backgroundColor: "#f2f2f2",
+        color: "#000",
+        minHeight: "100vh",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "40px 20px",
+        boxSizing: "border-box"
+      }}
+    >
+      <div 
+        className={styles.contentWrapper}
+        style={{ maxWidth: "900px", width: "100%", textAlign: "center" }}
       >
-        Get Started
-      </button>
+        <span className={styles.label} style={{ letterSpacing: "0.5em", fontSize: "10px", opacity: 0.6 }}>
+          THE NOVELARC PROTOCOL
+        </span>
 
-      <div className={styles.contentWrapper}>
-        <span className={styles.label}>The Novelarc Protocol</span>
-
-        <h1 className={styles.mainTitle}>
+        <h1 
+          className={styles.mainTitle}
+          style={{ 
+            fontFamily: "serif", 
+            fontSize: "clamp(2rem, 5vw, 4rem)", 
+            margin: "30px 0",
+            fontStyle: "italic" 
+          }}
+        >
           Visualizing the future of <br/> Philippine Living.
         </h1>
 
-        <div className={styles.grid}>
+        <div 
+          className={styles.grid}
+          style={{ 
+            display: "flex", 
+            gap: "40px", 
+            textAlign: "left", 
+            borderTop: "1px solid rgba(0,0,0,0.1)",
+            paddingTop: "40px",
+            marginTop: "20px"
+          }}
+        >
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>The Vision</h3>
-            <p className={styles.description}>
-              Novelarc is a digital gateway designed for the modern homeowner. 
-              We translate architectural blueprints into immersive 1:1 digital 
-              environments, allowing you to walk through your future home.
+            <h3 style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.2em" }}>The Vision</h3>
+            <p style={{ fontSize: "14px", lineHeight: "1.6", opacity: 0.8 }}>
+              Novelarc is a digital gateway designed for the modern homeowner. We translate architectural blueprints into immersive digital environments.
             </p>
           </div>
 
           <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>The Selection</h3>
-            <p className={styles.description}>
-              Browse our curated collection of Philippine residential designs. 
-              Every interior is physically accurate. Pick your space, then enter the world.
+            <h3 style={{ fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.2em" }}>The Selection</h3>
+            <p style={{ fontSize: "14px", lineHeight: "1.6", opacity: 0.8 }}>
+              Browse our curated collection of Philippine residential designs. Pick your space, then enter the world.
             </p>
           </div>
         </div>
 
-        {/* CENTER INITIALIZE BUTTON */}
-        <div className="mt-10 mb-20 flex justify-center">
+        {/* ENTER THE WORD BUTTON (Pure Black style) */}
+        <div style={{ marginTop: "60px" }}>
           <Link href="/world/main-world">
             <button 
-              className={desktopStyles.button} 
-              style={{ color: '#000', borderColor: 'rgba(0,0,0,0.2)' }}
+              style={{
+                backgroundColor: "#000",
+                color: "#fff",
+                padding: "15px 40px",
+                border: "none",
+                borderRadius: "2px",
+                fontSize: "10px",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                letterSpacing: "0.4em",
+                cursor: "pointer"
+              }}
             >
-              Initialize 3D World
+              Enter the Word of 3D
             </button>
           </Link>
         </div>
       </div>
-
-      <footer className="w-full text-center opacity-30 pb-10">
-        <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
-          ARCHITECTURE • INTERIOR • SELECTION
-        </div>
-      </footer>
     </main>
   );
 }
