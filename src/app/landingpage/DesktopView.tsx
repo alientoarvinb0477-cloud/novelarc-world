@@ -2,13 +2,12 @@
 
 import Image from "next/image";
 import styles from "../design/desktop.module.css";
-// Ensure this image exists in your /public folder
 import HouseImage from "../../../public/image_1.png"; 
 
 export default function DesktopView() {
   return (
     <main className={styles.container}>
-      {/* 1. TOP PROGRESS BAR (Visual timer) */}
+      {/* 1. TOP PROGRESS BAR */}
       <div className={styles.topProgress} />
 
       {/* Background Layer */}
@@ -20,11 +19,10 @@ export default function DesktopView() {
           priority
           className={styles.backgroundImage}
         />
-        {/* Subtle darkening overlay for readability */}
         <div className="absolute inset-0 bg-black/20 pointer-events-none" />
       </div>
 
-      {/* Elegant Content Overlay */}
+      {/* Content Overlay (Now fades out at 4s) */}
       <section className={styles.content}>
         <h1 className={styles.title}>
           DIGITAL ARCHITECTURE<br />
@@ -37,8 +35,8 @@ export default function DesktopView() {
         </h2>
       </section>
 
-      {/* Floating Footer */}
-      <footer className="absolute bottom-10 w-full flex justify-center z-20 opacity-30">
+      {/* Floating Footer (Now fades out at 4s) */}
+      <footer className={styles.footerContainer}>
         <div className="font-sans text-[8px] font-bold uppercase tracking-[1.2em] text-white">
           ARC-V1 • 2026
         </div>
