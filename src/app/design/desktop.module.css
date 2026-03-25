@@ -94,3 +94,40 @@
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+
+/* --- Scroll Indicator Animation --- */
+.scrollHint {
+  position: absolute;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+  animation: fadeIn 2s ease-in-out;
+}
+
+.mouse {
+  width: 20px;
+  height: 32px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  position: relative;
+}
+
+.wheel {
+  width: 2px;
+  height: 6px;
+  background-color: #fff;
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: scrollWheel 2s infinite;
+}
+
+@keyframes scrollWheel {
+  0% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 15px); }
+}
