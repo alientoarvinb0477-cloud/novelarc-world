@@ -40,6 +40,14 @@ export default function DesktopView() {
         </Link>
       </section>
 
+      {/* Add this right before the </footer> */}
+      <div className={styles.scrollHint}>
+        <div className={styles.mouse}>
+          <div className={styles.wheel} />
+        </div>
+        <span className="text-[7px] uppercase tracking-[0.4em] text-white">Scroll to Explore</span>
+      </div>
+
       {/* Floating Footer */}
       <footer className="absolute bottom-10 w-full flex justify-center z-20 opacity-30">
         <div className="font-sans text-[8px] font-bold uppercase tracking-[1.2em] text-white">
