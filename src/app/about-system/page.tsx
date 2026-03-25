@@ -1,58 +1,75 @@
-"use client";
+/* src/app/design/about.module.css */
 
-import React from "react";
-import Link from "next/link";
-import styles from "../design/about.module.css";
-import desktopStyles from "../design/desktop.module.css";
+.container {
+  min-height: 100vh;
+  background-color: #6E6E6E; /* Industrial Grey */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  overflow: hidden;
+}
 
-export default function AboutSystemPage() {
-  return (
-    <main className={styles.container}>
-      
-      <div className={styles.contentWrapper}>
-        <span className={styles.label}>The Novelarc Protocol</span>
+.contentWrapper {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 1s ease-out;
+}
 
-        <h1 className={styles.mainTitle}>
-          Visualizing the future of <br/> Philippine Living.
-        </h1>
+.label {
+  font-family: 'Montserrat', sans-serif;
+  color: #BCFD4C; /* Electric Lime */
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6em;
+  margin-bottom: 2rem;
+}
 
-        <div className={styles.grid}>
-          <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>The Vision</h3>
-            <p className={styles.description}>
-              Novelarc is a digital gateway designed for the modern homeowner. 
-              We translate architectural blueprints into immersive 1:1 digital 
-              environments.
-            </p>
-          </div>
+.mainTitle {
+  font-family: 'Cormorant Garamond', serif;
+  color: #BCFD4C; 
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-style: italic;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 4rem;
+}
 
-          <div className={styles.section}>
-            <h3 className={styles.sectionTitle}>The Selection</h3>
-            <p className={styles.description}>
-              Browse our curated collection of Philippine residential designs. 
-              Pick your space, then enter the world.
-            </p>
-          </div>
-        </div>
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 4rem;
+  width: 100%;
+  border-top: 1px solid rgba(188, 253, 76, 0.3); /* Low opacity Lime line */
+  padding-top: 3rem;
+}
 
-        {/* Updated Button to match the Grey/Purple theme */}
-        <div className="mt-20">
-          <Link href="/world/main-world">
-            <button 
-              className={desktopStyles.button} 
-              style={{ borderColor: '#A5A5A5', color: '#A5A5A5' }}
-            >
-              Initialize 3D World
-            </button>
-          </Link>
-        </div>
-      </div>
+.sectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  color: #BCFD4C;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  margin-bottom: 1rem;
+}
 
-      <footer className="mt-20 opacity-20">
-        <div className="text-[7px] font-bold uppercase tracking-[1em] color-[#A5A5A5]">
-          ARCHITECTURE • INTERIOR • SELECTION
-        </div>
-      </footer>
-    </main>
-  );
+.description {
+  font-family: 'Montserrat', sans-serif;
+  color: #BCFD4C;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
