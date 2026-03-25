@@ -1,17 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
+
 .container {
-  min-height: 100vh;
+  width: 100%;
+  height: 100vh; /* Force it to match the browser height exactly */
   background-color: #f2f2f2; /* Professional Light Gray */
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* Changed padding to ensure bottom content isn't cut off */
-  padding: 8rem 2rem 10rem 2rem; 
-  overflow-y: auto;
-  position: relative;
+  justify-content: center; /* Centers content vertically */
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevents unwanted scrolling if content fits */
 }
 
 .contentWrapper {
-  max-width: 1000px;
+  max-width: 1100px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -22,36 +25,38 @@
 .label {
   font-family: 'Montserrat', sans-serif;
   color: #000000;
-  font-size: 9px;
+  font-size: clamp(8px, 1vw, 10px);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.8em;
-  margin-bottom: 2.5rem;
-  opacity: 0.6;
+  margin-bottom: 2rem;
+  opacity: 0.5;
 }
 
 .mainTitle {
   font-family: 'Cormorant Garamond', serif;
   color: #000000;
-  /* Reduced slightly for better fit on all screens */
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   font-style: italic;
   font-weight: 300;
   text-align: center;
   line-height: 1.1;
-  margin-bottom: 4rem;
+  margin-bottom: 3.5rem;
   letter-spacing: -0.01em;
 }
 
 .grid {
-  display: grid;
-  /* Better responsive handling */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 3rem;
+  display: flex; /* Using flex for better centering than grid */
+  gap: 4rem;
   width: 100%;
+  max-width: 900px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  padding-top: 4rem;
+  padding-top: 3rem;
   margin-bottom: 4rem;
+}
+
+.section {
+  flex: 1;
 }
 
 .sectionTitle {
@@ -60,49 +65,55 @@
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  margin-bottom: 1.5rem;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
 }
 
 .description {
   font-family: 'Montserrat', sans-serif;
   color: #000000;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 300;
-  line-height: 1.8;
-  opacity: 0.8;
+  line-height: 1.6;
+  opacity: 0.7;
 }
 
-/* Beautiful Top Right Button Styling */
-.topRightBtn {
-  position: fixed;
-  top: 2.5rem;
-  right: 2.5rem;
-  z-index: 100;
-  padding: 0.8rem 2rem;
-  background: transparent;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  color: #000;
+/* --- New "Enter the World of 3D" Button --- */
+.enterButton {
+  background-color: #000000;
+  color: #ffffff;
   font-family: 'Montserrat', sans-serif;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  border-radius: 0px; /* Sharp architectural corners */
+  letter-spacing: 0.4em;
+  padding: 1.25rem 3rem;
+  border: none;
+  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  backdrop-filter: blur(10px);
+  transition: all 0.4s ease;
 }
 
-.topRightBtn:hover {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+.enterButton:hover {
+  background-color: #333333;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
 }
 
 @keyframes fadeInContent {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive fix for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    height: auto;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+  }
+  .grid {
+    flex-direction: column;
+    gap: 2rem;
+  }
 }
