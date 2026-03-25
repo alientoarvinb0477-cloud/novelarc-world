@@ -1,14 +1,15 @@
 /* src/app/design/loading.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1@300&family=Montserrat:wght@100;300;600&display=swap');
 
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 1000; /* Ensure it's above everything */
+  z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #000;
-  transition: opacity 1s ease-in-out;
+  background-color: #0c0a09; /* stone-950 */
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .hidden {
@@ -16,35 +17,24 @@
   pointer-events: none;
 }
 
-.visible {
-  opacity: 1;
-}
-
-.backgroundTexture {
-  position: absolute;
-  inset: 0;
-  opacity: 0.03;
-  pointer-events: none;
-  background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
-  z-index: -1;
-}
-
 .contentWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2rem;
+  gap: 3rem;
+  /* Add that elegant float to the loader too */
+  animation: floatLoader 6s ease-in-out infinite;
 }
 
-/* --- SVG Progress Ring --- */
+/* --- Elegant Progress Ring --- */
 .ringContainer {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 128px; /* 32 * 4 */
-  height: 128px;
+  width: 100px;
+  height: 100px;
 }
 
 .svg {
@@ -59,57 +49,58 @@
 }
 
 .progressCircle {
-  color: #ea580c; /* orange-600 */
-  transition: stroke-dashoffset 0.5s ease-out;
-  filter: drop-shadow(0 0 8px rgba(234, 88, 12, 0.5));
+  color: #fff; /* White for elegance */
+  transition: stroke-dashoffset 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .percentage {
-  color: white;
-  font-family: monospace;
-  font-size: 1.25rem;
-  font-weight: 900;
-  letter-spacing: -0.05em;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
 }
 
-/* --- Status Text --- */
+/* --- Elegant Status Text --- */
 .statusContainer {
   text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .mainStatus {
-  color: #f97316; /* orange-500 */
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.6em;
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  font-family: 'Cormorant Garamond', serif;
+  color: #d6d3d1; /* stone-300 */
+  font-size: 1.8rem;
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: -0.02em;
 }
 
 .subStatusWrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
+  opacity: 0.5;
 }
 
 .line {
   height: 1px;
-  width: 1rem;
-  background-color: #292524; /* stone-800 */
+  width: 2rem;
+  background-color: #44403c; /* stone-700 */
 }
 
 .nodeInfo {
-  color: #57534e; /* stone-600 */
+  font-family: 'Montserrat', sans-serif;
+  color: #78716c; /* stone-500 */
   font-size: 7px;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.5em;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+@keyframes floatLoader {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
