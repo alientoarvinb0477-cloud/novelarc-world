@@ -40,6 +40,8 @@ export default function DesktopView() {
         </Link>
       </section>
 
+<div className={styles.topProgress} />
+      
       {/* Add this right before the </footer> */}
       <div className={styles.scrollHint}>
         <div className={styles.mouse}>
