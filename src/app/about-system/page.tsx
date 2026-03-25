@@ -1,24 +1,45 @@
 "use client";
 
 import React from "react";
-import Link from "next/link"; // <--- THIS WAS MISSING
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import styles from "../design/about.module.css";
+// Importing desktop styles for the shared button appearance
 import desktopStyles from "../design/desktop.module.css";
 
 export default function AboutSystemPage() {
-  const router = useRouter();
+  // Update these to match your actual PNG filenames in /public
+  const galleryImages = [
+    "/img1.png",
+    "/img2.png",
+    "/img3.png",
+    "/img4.png",
+    "/img5.png"
+  ];
 
   return (
     <main className={styles.container}>
-      {/* PERSISTENT TOP RIGHT BUTTON */}
-      <button 
-        onClick={() => router.push("/world/main-world")}
-        className={desktopStyles.getStartedTop} 
-      >
-        Get Started
-      </button>
+      
+      {/* 1. 5-IMAGE FLASH GALLERY */}
+      <div className={styles.galleryWrapper}>
+        {galleryImages.map((src, index) => (
+          <div 
+            key={index} 
+            className={styles.flashImage}
+            style={{ animationDelay: `${index}s` }} // Each image shows for 1s
+          >
+            <Image 
+              src={src} 
+              alt={`Gallery Architecture ${index + 1}`} 
+              fill 
+              priority={index === 0}
+              className={styles.actualImage}
+            />
+          </div>
+        ))}
+      </div>
 
+      {/* 2. TEXT CONTENT (Dark text for white background) */}
       <div className={styles.contentWrapper}>
         <span className={styles.label}>The Novelarc Protocol</span>
 
@@ -45,10 +66,13 @@ export default function AboutSystemPage() {
           </div>
         </div>
 
-        <div className={styles.ctaContainer}>
-          {/* Ensure Link is used correctly here */}
+        {/* 3. FINAL CTA */}
+        <div className="mt-16">
           <Link href="/world/main-world">
-            <button className={desktopStyles.button}>
+            <button 
+              className={desktopStyles.button} 
+              style={{ borderColor: '#1c1917', color: '#1c1917' }}
+            >
               Initialize 3D World
             </button>
           </Link>
