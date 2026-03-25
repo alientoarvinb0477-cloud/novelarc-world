@@ -2,7 +2,7 @@
 
 import { useProgress } from "@react-three/drei";
 import { useEffect, useState } from "react";
-import styles from "../../app/design/loading.module.css";
+import styles from "../../app/design/loading.module.css"; 
 
 export default function LoadingScreen() {
   const { progress, active } = useProgress();
@@ -10,7 +10,7 @@ export default function LoadingScreen() {
 
   useEffect(() => {
     if (!active && progress === 100) {
-      const timer = setTimeout(() => setShown(false), 800);
+      const timer = setTimeout(() => setShown(false), 1200); // Slower exit for elegance
       return () => clearTimeout(timer);
     }
   }, [progress, active]);
@@ -18,34 +18,32 @@ export default function LoadingScreen() {
   if (!shown) return null;
 
   return (
-    <div className={`${styles.overlay} ${!active ? styles.hidden : styles.visible}`}>
+    <div className={`${styles.overlay} ${(!active && progress === 100) ? styles.hidden : ""}`}>
       
-      <div className={styles.backgroundTexture} />
-
       <div className={styles.contentWrapper}>
         
-        {/* --- CENTRAL LOADING CIRCLE --- */}
+        {/* --- ELEGANT RING --- */}
         <div className={styles.ringContainer}>
           <svg className={styles.svg}>
             <circle
-              cx="64"
-              cy="64"
-              r="60"
+              cx="50"
+              cy="50"
+              r="48"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1"
               fill="transparent"
               className={styles.bgCircle}
             />
             <circle
-              cx="64"
-              cy="64"
-              r="60"
+              cx="50"
+              cy="50"
+              r="48"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1"
               fill="transparent"
-              strokeDasharray={377}
-              strokeDashoffset={377 - (377 * progress) / 100}
-              strokeLinecap="round"
+              strokeDasharray={301.6} /* 2 * PI * 48 */
+              strokeDashoffset={301.6 - (301.6 * progress) / 100}
+              strokeLinecap="butt"
               className={styles.progressCircle}
             />
           </svg>
@@ -55,15 +53,15 @@ export default function LoadingScreen() {
           </div>
         </div>
 
-        {/* --- STATUS TEXT --- */}
+        {/* --- ELEGANT STATUS --- */}
         <div className={styles.statusContainer}>
           <p className={styles.mainStatus}>
-            {active ? "Initialising Grid" : "System Ready"}
+            {active ? "Visualizing your space" : "Architecture Ready"}
           </p>
           <div className={styles.subStatusWrapper}>
             <div className={styles.line} />
             <p className={styles.nodeInfo}>
-              Node: ARC-V1 • Valenzuela
+              ARC-V1 • NOVELARC
             </p>
             <div className={styles.line} />
           </div>
