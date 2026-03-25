@@ -1,108 +1,105 @@
-/* ... existing styles ... */
+/* src/app/design/overlay.module.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
 
 .container {
   position: fixed;
   inset: 0;
   z-index: 500;
-  background-color: #000;
+  background-color: #0c0a09; /* stone-950 */
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 2.5rem;
   touch-action: none;
-  /* Add transition for the container itself */
-  transition: opacity 0.8s ease-in-out, visibility 0.8s;
+  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Class to trigger the fade */
 .fadeOut {
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Optional: Add a subtle scaling effect to the box as it disappears */
-.fadeOut .notification {
-  transform: scale(0.9);
-  transition: transform 0.8s ease-in-out;
-}
-
-/* The "Notification" Box */
+/* The Elegant Notification Box */
 .notification {
   width: 100%;
-  max-width: 320px;
+  max-width: 340px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 1.5rem;
-  animation: fadeIn 0.8s ease-out;
+  gap: 2rem;
+  animation: fadeInOverlay 1.5s ease-out, floatOverlay 6s ease-in-out infinite 1.5s;
 }
 
 .title {
-  color: #ea580c; /* orange-600 */
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-family: 'Cormorant Garamond', serif;
+  color: #fff;
+  font-size: 3.5rem;
+  font-weight: 300;
   font-style: italic;
-  letter-spacing: -0.1em;
-  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  line-height: 0.9;
 }
 
 .statusLine {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   width: 100%;
+  opacity: 0.4;
 }
 
 .line {
   height: 1px;
   flex-grow: 1;
-  background-color: #1c1917; /* stone-900 */
+  background-color: #57534e; /* stone-600 */
 }
 
 .statusText {
-  color: #57534e; /* stone-600 */
-  font-size: 9px;
+  font-family: 'Montserrat', sans-serif;
+  color: #d6d3d1;
+  font-size: 8px;
   text-transform: uppercase;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.5em;
   white-space: nowrap;
 }
 
 .enterButton {
+  font-family: 'Montserrat', sans-serif;
   width: 100%;
-  padding: 1.25rem;
-  background-color: #ea580c;
-  color: white;
-  border: none;
-  border-radius: 0.75rem;
-  font-weight: 900;
+  padding: 1.4rem;
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  box-shadow: 0 15px 30px rgba(234, 88, 12, 0.2);
-  transition: all 0.2s ease;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
 
 .enterButton:active {
+  background-color: #fff;
+  color: #000;
   transform: scale(0.96);
-  background-color: #fb923c;
 }
 
 .hint {
-  color: #44403c;
-  font-size: 8px;
+  font-family: 'Montserrat', sans-serif;
+  color: #44403c; /* stone-700 */
+  font-size: 7px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.3em;
+  font-weight: 300;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+@keyframes fadeInOverlay {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatOverlay {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
