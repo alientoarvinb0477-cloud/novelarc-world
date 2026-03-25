@@ -1,57 +1,77 @@
+/* src/app/design/about.module.css */
+
 .container {
   min-height: 100vh;
-  background-color: #ffffff;
+  background-color: #6552D0; /* Your New Deep Purple */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  text-align: center;
-}
-
-.galleryWrapper {
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 16/9;
-  position: relative;
-  margin-bottom: 3rem;
+  padding: 4rem 2rem;
+  transition: background-color 0.8s ease;
   overflow: hidden;
-  background: #f0f0f0; /* Placeholder color if images don't load */
 }
 
-.flashImage {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: flashLoop 5s steps(1) infinite;
-}
-
-@keyframes flashLoop {
-  0%, 20% { opacity: 1; }
-  20.001%, 100% { opacity: 0; }
-}
-
-.mainTitle {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 3.5rem;
-  color: #1a1a1a;
-  margin-bottom: 2rem;
+.contentWrapper {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInUp 1.2s ease-out forwards;
 }
 
 .label {
   font-family: 'Montserrat', sans-serif;
-  letter-spacing: 0.5em;
-  text-transform: uppercase;
+  color: #A5A5A5; /* Your New Grey */
   font-size: 10px;
-  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.6em;
+  margin-bottom: 2rem;
+  opacity: 0.8;
+}
+
+.mainTitle {
+  font-family: 'Cormorant Garamond', serif;
+  color: #A5A5A5; /* Your New Grey */
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-style: italic;
+  font-weight: 300;
+  text-align: center;
+  line-height: 1.1;
+  margin-bottom: 5rem;
+  letter-spacing: -0.02em;
 }
 
 .grid {
-  display: flex;
-  gap: 4rem;
-  max-width: 800px;
-  border-top: 1px solid #eee;
-  padding-top: 2rem;
-  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 5rem;
+  width: 100%;
+  border-top: 1px solid rgba(165, 165, 165, 0.2); /* Faded grey line */
+  padding-top: 4rem;
+}
+
+.sectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  color: #A5A5A5;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  font-family: 'Montserrat', sans-serif;
+  color: #A5A5A5;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.8;
+  opacity: 0.9;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
