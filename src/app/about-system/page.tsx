@@ -11,10 +11,10 @@ export default function AboutSystemPage() {
 
   return (
     <main className={styles.container}>
-      {/* TOP RIGHT GET STARTED BUTTON */}
+      {/* BEAUTIFIED TOP RIGHT BUTTON */}
       <button 
         onClick={() => router.push("/world/main-world")}
-        className="fixed top-10 right-10 z-[100] px-6 py-2 border border-[#5ebec4]/40 text-[#5ebec4] text-[9px] uppercase tracking-[0.4em] hover:bg-[#5ebec4] hover:text-[#fdf5df] transition-all duration-500 font-sans font-bold"
+        className={styles.topRightBtn}
       >
         Get Started
       </button>
@@ -32,7 +32,7 @@ export default function AboutSystemPage() {
             <p className={styles.description}>
               Novelarc is a digital gateway designed for the modern homeowner. 
               We translate architectural blueprints into immersive 1:1 digital 
-              environments.
+              environments, allowing you to walk through your future home.
             </p>
           </div>
 
@@ -40,17 +40,17 @@ export default function AboutSystemPage() {
             <h3 className={styles.sectionTitle}>The Selection</h3>
             <p className={styles.description}>
               Browse our curated collection of Philippine residential designs. 
-              Pick your space, then enter the world.
+              Every interior is physically accurate. Pick your space, then enter the world.
             </p>
           </div>
         </div>
 
         {/* CENTER INITIALIZE BUTTON */}
-        <div className="mt-20">
+        <div className="mt-10 mb-20 flex justify-center">
           <Link href="/world/main-world">
             <button 
               className={desktopStyles.button} 
-              style={{ color: '#5ebec4', borderColor: '#5ebec4' }}
+              style={{ color: '#000', borderColor: 'rgba(0,0,0,0.2)' }}
             >
               Initialize 3D World
             </button>
@@ -58,8 +58,8 @@ export default function AboutSystemPage() {
         </div>
       </div>
 
-      <footer className="mt-20 opacity-50">
-        <div className="text-[7px] font-bold uppercase tracking-[1em] text-[#5ebec4]">
+      <footer className="w-full text-center opacity-30 pb-10">
+        <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
           ARCHITECTURE • INTERIOR • SELECTION
         </div>
       </footer>
