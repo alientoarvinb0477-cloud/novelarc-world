@@ -17,10 +17,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px; /* Slightly thicker for visibility */
   background-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* Adds a premium glow */
   z-index: 1000;
-  /* Matches your 4.5s router timer */
   animation: loadProgress 4.5s linear forwards;
 }
 
@@ -61,6 +61,7 @@
   align-items: center;
   justify-content: center;
   animation: fadeIn 2s ease-out;
+  transform: translateY(20px);
 }
 
 .title {
