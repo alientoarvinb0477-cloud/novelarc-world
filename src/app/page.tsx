@@ -1,29 +1,46 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation"; // To handle the page change
 import DesktopView from "./landingpage/DesktopView";
 import MobileView from "./landingpage/MobileView";
 
 export default function LandingPage() {
   const [isMobile, setIsMobile] = useState<boolean | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const checkDevice = () => {
       const mobile = window.innerWidth <= 768 || ('ontouchstart' in window);
-      // Even faster transition for lower latency
       setTimeout(() => setIsMobile(mobile), 400);
     };
 
     checkDevice();
     window.addEventListener("resize", checkDevice);
-    return () => window.removeEventListener("resize", checkDevice);
-  }, []);
+
+    // --- SCROLL TO NEXT PAGE LOGIC ---
+    const handleScroll = (e: WheelEvent) => {
+      // If user scrolls down
+      if (e.deltaY > 50) { 
+        router.push("/world/main-world");
+      }
+    };
+
+    // Only add scroll listener on Desktop
+    if (isMobile === false) {
+      window.addEventListener("wheel", handleScroll);
+    }
+
+    return () => {
+      window.removeEventListener("resize", checkDevice);
+      window.removeEventListener("wheel", handleScroll);
+    };
+  }, [isMobile, router]);
 
   if (isMobile === null) {
     return (
       <div className="h-screen w-full bg-black flex flex-col items-center justify-center">
         <div className="w-10 h-10 border-2 border-stone-800 border-t-white rounded-full animate-spin" />
-        <p className="mt-6 text-stone-600 text-[9px] uppercase tracking-[0.6em] animate-pulse">NOVELARC</p>
       </div>
     );
   }
