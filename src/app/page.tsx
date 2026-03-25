@@ -19,12 +19,13 @@ export default function LandingPage() {
     window.addEventListener("resize", checkDevice);
 
     // --- SCROLL TO NEXT PAGE LOGIC ---
-    const handleScroll = (e: WheelEvent) => {
-      // If user scrolls down
-      if (e.deltaY > 50) { 
-        router.push("/world/main-world");
-      }
-    };
+    // ... inside useEffect for handleScroll ...
+const handleScroll = (e: WheelEvent) => {
+  if (e.deltaY > 50) { 
+    // This now sends them to your explanation/system page
+    router.push("/about-system"); 
+  }
+};
 
     // Only add scroll listener on Desktop
     if (isMobile === false) {
