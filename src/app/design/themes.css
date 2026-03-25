@@ -1,0 +1,14 @@
+/* src/app/design/themes.css */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,700&family=Montserrat:wght@100;300;600&display=swap');
+
+:root {
+  /* THEME COLORS (for elegant contrast) */
+  --bg-main: #0c0a09; /* stone-950 (Dark) */
+  --text-main: #fafaf9; /* stone-50 (White/Light) */
+  --brand-primary: #f2f2f2; /* Light Gray/Near-White */
+  --brand-elegant: #f7b731; /* Subtle Gold Accent */
+
+  /* ELEGANT FONTS */
+  --font-serif: 'Cormorant Garamond', serif; /* Elegant Serif */
+  --font-sans-light: 'Montserrat', sans-serif; /* Clean Sans-Serif */
+}
