@@ -1,74 +1,96 @@
-/* src/app/design/mobile.module.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
 
 .container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100dvh; /* Dynamic viewport for mobile browsers */
+  background-color: #000;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between; /* Pushes content to top/bottom */
-  padding: 5rem 2rem 3rem 2rem;
-  background-color: #000;
-  overflow: hidden;
-  touch-action: none; /* Prevents accidental zooming/scrolling */
+  justify-content: center;
+  padding: 2rem;
 }
 
-.header {
+.backgroundWrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center;
+  filter: brightness(0.6) saturate(0.8);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeInMobile 1.2s ease-out forwards, floatMobile 6s ease-in-out infinite 1.2s;
 }
 
 .title {
-  font-size: 4rem;
-  font-weight: 900;
-  letter-spacing: -0.05em;
+  font-family: 'Cormorant Garamond', serif;
+  color: #fff;
+  font-size: 3.2rem;
+  font-weight: 300;
   line-height: 1;
-  color: white;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.5rem;
+}
+
+.titleItalic {
+  font-style: italic;
+  color: #d6d3d1;
 }
 
 .subtitle {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.6em;
-  color: #78716c; /* stone-500 */
-  margin-top: 1rem;
+  font-family: 'Montserrat', sans-serif;
+  color: #e7e5e4;
+  font-size: 0.65rem;
+  font-weight: 300;
   text-transform: uppercase;
+  letter-spacing: 0.3em;
+  line-height: 1.8;
+  max-width: 280px;
+  margin-bottom: 3rem;
 }
 
-.buttonArea {
+.button {
+  font-family: 'Montserrat', sans-serif;
   width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.actionButton {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1.5rem;
-  background-color: #ea580c; /* orange-600 */
-  color: white;
-  border-radius: 1rem;
-  font-weight: 900;
+  max-width: 260px;
+  padding: 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #fff;
   text-transform: uppercase;
-  font-size: 0.8rem;
-  letter-spacing: 0.2em;
-  border: none;
-  box-shadow: 0 10px 40px rgba(234, 88, 12, 0.3);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  border-radius: 2px;
+  transition: all 0.3s ease;
 }
 
-.actionButton:active {
+.button:active {
+  background: #fff;
+  color: #000;
   transform: scale(0.95);
-  background-color: #fb923c;
 }
 
-.footer {
-  font-size: 0.5rem;
-  font-weight: 700;
-  letter-spacing: 0.5em;
-  color: #44403c; /* stone-700 */
-  opacity: 0.5;
+@keyframes fadeInMobile {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatMobile {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
