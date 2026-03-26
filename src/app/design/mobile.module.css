@@ -9,8 +9,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; 
-  padding-top: 18vh; /* Adjusted slightly for the longer word */
+  justify-content: flex-start; /* Keeps content at the top */
+  padding-top: 20vh; /* Locked at 20% from the top */
 }
 
 .backgroundWrapper {
@@ -28,7 +28,7 @@
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.12); /* Very light to keep image bright */
+  background: rgba(255, 255, 255, 0.12); /* Maintains light/clarity */
   z-index: 1;
 }
 
@@ -44,31 +44,30 @@
 .title {
   font-family: 'Cormorant Garamond', serif;
   color: #000000;
-  /* Font size adjusted so "ARCHITECTURE" fits the width */
-  font-size: clamp(3rem, 16vw, 6rem); 
+  /* Massive size but allowed to be lowercase/sentence case */
+  font-size: clamp(3.5rem, 18vw, 7rem); 
   font-weight: 300;
   line-height: 0.85;
   letter-spacing: -0.04em;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  /* Removed text-transform: uppercase */
 }
 
 .titleItalic {
   font-style: italic;
   display: block;
-  font-size: 1.1em; /* Makes the "ARC" slightly more prominent */
+  font-size: 1.1em;
   margin-top: -0.2rem;
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
   color: #000000;
-  font-size: 9px; /* Small and precise */
+  font-size: 10px;
   font-weight: 500;
-  text-transform: lowercase; /* Domain names look better in lowercase */
-  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  letter-spacing: 0.25em;
   opacity: 0.7;
-  margin-top: 0.5rem;
 }
 
 @keyframes subtleZoom {
