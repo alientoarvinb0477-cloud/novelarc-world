@@ -1,8 +1,10 @@
+/* mobile.module.css */
+
 .container {
   position: relative;
   width: 100%;
   height: 100vh;
-  background-color: #000;
+  background-color: #f2f2f2; /* Matches your About page background */
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -10,7 +12,6 @@
   justify-content: center;
 }
 
-/* --- 1. Background Image (The "Safe" Zoom) --- */
 .backgroundWrapper {
   position: absolute;
   inset: 0;
@@ -18,27 +19,21 @@
 }
 
 .backgroundImage {
-  /* This ensures the full image is used to 'cover' the screen without distortion */
   object-fit: cover;
-  object-position: center; 
-  /* Slow, high-end cinematic zoom */
+  object-position: center;
+  /* Cinematic zoom remains */
   animation: cinematicZoom 10s ease-out forwards;
 }
 
-@keyframes cinematicZoom {
-  from { transform: scale(1); }
-  to { transform: scale(1.15); } /* Subtle zoom so it doesn't get blurry */
-}
-
-/* Dark Overlay to make the massive text pop */
+/* LIGHT OVERLAY: This makes black text visible over any image */
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+  background: rgba(242, 242, 242, 0.4); /* Subtle Light Gray tint */
+  backdrop-filter: grayscale(20%); /* Optional: mutes colors for elegance */
   z-index: 1;
 }
 
-/* --- 2. Content (The Massive Text) --- */
 .content {
   position: relative;
   z-index: 10;
@@ -52,36 +47,42 @@
 
 .title {
   font-family: 'Cormorant Garamond', serif;
-  color: #fff;
-  /* Extremely large font size */
+  color: #000000; /* PURE BLACK */
   font-size: clamp(5.5rem, 28vw, 10rem); 
   font-weight: 300;
   line-height: 0.75;
   letter-spacing: -0.06em;
   margin-bottom: 2rem;
-  text-shadow: 0 15px 40px rgba(0,0,0,0.5);
+  /* LIGHT GRAY SHADOW */
+  text-shadow: 8px 8px 15px rgba(165, 165, 165, 0.6); 
 }
 
 .titleItalic {
   font-style: italic;
   display: block;
-  color: #e5e5e5;
-  margin-top: -0.5rem; /* Tightens the gap between NOVEL and ARC */
+  color: #1a1a1a;
+  margin-top: -0.5rem;
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(255, 255, 255, 0.9);
+  color: #000000; /* BLACK */
   font-size: 0.55rem;
-  font-weight: 300;
+  font-weight: 600; /* Made slightly bolder for black contrast */
   text-transform: uppercase;
   letter-spacing: 0.5em;
   line-height: 2.5;
   max-width: 250px;
   margin: 0 auto;
+  opacity: 0.7;
 }
 
-/* --- Animations --- */
+/* Animations */
+@keyframes cinematicZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
