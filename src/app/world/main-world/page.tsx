@@ -73,22 +73,31 @@ export default function MainWorldPage() {
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
-          {/* ✅ Bright Day Sky Restored ✅ */}
           <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={3} />
           
           <Environment preset="city" background={false} />
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 20, 10]} intensity={1.2} castShadow />
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
             <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
 
-            {/* ✅ Stylish Lamps Every 60 Units ✅ */}
-            {[...Array(15)].map((_, i) => (
-              <LightPost key={i} position={[-8.5, 1.0, -i * 60]} />
-            ))}
+            {/* ✅ ALTERNATING LIGHT POSTS ✅ */}
+            {[...Array(20)].map((_, i) => {
+              const isLeft = i % 2 === 0;
+              const xPos = isLeft ? -8.5 : 8.5;
+              const rotY = isLeft ? 0 : Math.PI; // Flip 180 degrees for the right side
+
+              return (
+                <LightPost 
+                  key={i} 
+                  position={[xPos, 1.0, -i * 50]} 
+                  rotation={[0, rotY, 0]} 
+                />
+              );
+            })}
 
             <Billboard 
               position={[10, 0, -30]} 
