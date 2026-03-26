@@ -8,10 +8,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  /* Aligns content to the top instead of the center */
   align-items: center;
   justify-content: flex-start; 
-  padding-top: 20vh; /* Positions title exactly at the top 20% */
+  padding-top: 18vh; /* Adjusted slightly for the longer word */
 }
 
 .backgroundWrapper {
@@ -23,15 +22,13 @@
 .backgroundImage {
   object-fit: cover;
   object-position: center;
-  /* Keeping the light and clarity, removed blur */
   animation: subtleZoom 8s ease-out forwards;
 }
 
-/* Light overlay to maintain image brightness while helping text contrast */
 .overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.15); 
+  background: rgba(255, 255, 255, 0.12); /* Very light to keep image bright */
   z-index: 1;
 }
 
@@ -40,47 +37,43 @@
   z-index: 10;
   text-align: center;
   width: 100%;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
   animation: fadeIn 1.5s ease-out forwards;
 }
 
 .title {
   font-family: 'Cormorant Garamond', serif;
-  color: #000000; /* PURE BLACK */
-  font-size: clamp(4.5rem, 25vw, 9rem); 
+  color: #000000;
+  /* Font size adjusted so "ARCHITECTURE" fits the width */
+  font-size: clamp(3rem, 16vw, 6rem); 
   font-weight: 300;
-  line-height: 0.8;
-  letter-spacing: -0.05em;
-  margin-bottom: 1.5rem;
-  /* Removed the floating shadow for a flat, clean look */
-  text-shadow: none; 
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
 }
 
 .titleItalic {
   font-style: italic;
   display: block;
-  color: #000000;
+  font-size: 1.1em; /* Makes the "ARC" slightly more prominent */
   margin-top: -0.2rem;
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
   color: #000000;
-  font-size: 0.55rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5em;
-  line-height: 2;
-  max-width: 250px;
-  margin: 0 auto;
-  opacity: 0.8;
+  font-size: 9px; /* Small and precise */
+  font-weight: 500;
+  text-transform: lowercase; /* Domain names look better in lowercase */
+  letter-spacing: 0.2em;
+  opacity: 0.7;
+  margin-top: 0.5rem;
 }
-
-/* --- ANIMATIONS --- */
 
 @keyframes subtleZoom {
   from { transform: scale(1); }
-  to { transform: scale(1.08); } /* Very slight zoom to keep image sharp */
+  to { transform: scale(1.08); }
 }
 
 @keyframes fadeIn {
