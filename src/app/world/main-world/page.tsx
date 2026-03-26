@@ -84,20 +84,20 @@ export default function MainWorldPage() {
 
             <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
 
-            {/* ✅ ALTERNATING LIGHT POSTS ✅ */}
-            {[...Array(20)].map((_, i) => {
-              const isLeft = i % 2 === 0;
-              const xPos = isLeft ? -8.5 : 8.5;
-              const rotY = isLeft ? 0 : Math.PI; // Flip 180 degrees for the right side
+{/* Inside your <Physics> tag */}
+{[...Array(20)].map((_, i) => {
+  const isLeft = i % 2 === 0;
+  const xPos = isLeft ? -7.5 : 7.5; // Adjusted to sit exactly on the white lines
+  const rotationY = isLeft ? 0 : Math.PI; // Flip 180 degrees for the right side
 
-              return (
-                <LightPost 
-                  key={i} 
-                  position={[xPos, 1.0, -i * 50]} 
-                  rotation={[0, rotY, 0]} 
-                />
-              );
-            })}
+  return (
+    <LightPost 
+      key={i} 
+      position={[xPos, 1.0, -i * 40]} 
+      rotation={[0, rotationY, 0]} 
+    />
+  );
+})}
 
             <Billboard 
               position={[10, 0, -30]} 
