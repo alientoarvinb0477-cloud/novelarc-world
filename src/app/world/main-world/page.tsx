@@ -8,7 +8,6 @@ import { useStore } from "../../../hooks/useStore";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
-import House from "../../house/House";
 import Billboard from "../../displayObject/Billboard"; // ✅ Added Billboard import
 import StartOverlay from "../../../components/world/StartOverlay";
 
@@ -93,11 +92,7 @@ export default function MainWorldPage() {
               description="Visualizing the Future"
             />
 
-            {/* Place your first house */}
-            <House 
-              id="starter-home" 
-              position={[15, 0, -15]} 
-            />
+
             
             <Player />
             <RigidBody type="fixed">
