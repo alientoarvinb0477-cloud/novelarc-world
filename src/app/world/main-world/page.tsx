@@ -10,7 +10,6 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import House from "../../house/House";
 import StartOverlay from "../../../components/world/StartOverlay";
-import Billboard from "../../displayObject/Billboard";
 
 function WorldFloor() {
   const { scene } = useGLTF("/floor.glb");
@@ -92,13 +91,6 @@ export default function MainWorldPage() {
     id="starter-home" 
     position={[15, 0, -15]} 
   />
-
-  <Billboard 
-  position={[10, 0, -5]} 
-  rotation={[0, -Math.PI / 4, 0]} 
-  title="WELCOME TO NOVELARC"
-  description="novelarcDigitalEra.com"
-/>
 
 
             
