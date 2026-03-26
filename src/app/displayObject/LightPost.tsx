@@ -7,37 +7,26 @@ export default function LightPost({ position = [0, 0, 0] }) {
   return (
     <group position={position}>
       <RigidBody type="fixed" colliders="cuboid">
-        {/* The Pole */}
+        {/* Main Tapered Column */}
         <mesh castShadow position={[0, 4, 0]}>
-          <cylinderGeometry args={[0.1, 0.15, 8, 8]} />
-          <meshStandardMaterial color="#333333" metalness={0.8} roughness={0.2} />
+          <cylinderGeometry args={[0.05, 0.12, 8, 12]} />
+          <meshStandardMaterial color="#222222" metalness={0.9} roughness={0.1} />
         </mesh>
 
-        {/* The Arm */}
-        <mesh castShadow position={[0.7, 7.8, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.08, 0.08, 1.5, 8]} />
-          <meshStandardMaterial color="#333333" />
-        </mesh>
-
-        {/* The Lamp Head */}
-        <mesh position={[1.4, 7.6, 0]}>
-          <boxGeometry args={[0.6, 0.2, 0.4]} />
+        {/* Modern Stylist Curved Head */}
+        <mesh castShadow position={[0.6, 8, 0]} rotation={[0, 0, -Math.PI / 8]}>
+          <boxGeometry args={[1.5, 0.1, 0.4]} />
           <meshStandardMaterial color="#222222" />
         </mesh>
 
-        {/* Functional Light Source */}
-        <pointLight 
-          position={[1.4, 7.4, 0]} 
-          intensity={20} 
-          distance={25} 
-          color="#fff4d6" 
-          castShadow 
-        />
-        
-        {/* Visual Bulb */}
-        <mesh position={[1.4, 7.4, 0]}>
-          <sphereGeometry args={[0.15, 16, 16]} />
-          <meshStandardMaterial emissive="#fff4d6" emissiveIntensity={2} color="white" />
+        {/* Decorative Light Panel (Glow effect only, no actual light cast) */}
+        <mesh position={[1.2, 7.85, 0]}>
+          <boxGeometry args={[0.8, 0.05, 0.35]} />
+          <meshStandardMaterial 
+            emissive="#ffffff" 
+            emissiveIntensity={1.5} 
+            color="white" 
+          />
         </mesh>
       </RigidBody>
     </group>
