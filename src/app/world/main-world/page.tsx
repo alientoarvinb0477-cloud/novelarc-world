@@ -8,7 +8,7 @@ import { useStore } from "../../../hooks/useStore";
 import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
-import Billboard from "../../displayObject/Billboard"; // ✅ Added Billboard import
+import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
 import StartOverlay from "../../../components/world/StartOverlay";
 
@@ -45,7 +45,10 @@ export default function MainWorldPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  const mapSize = 450000;
+  
+  // ✅ 1. Reduced MapSize: 450,000 was causing the "Black Sky" bug. 
+  // 20,000 is still huge but much more stable for the GPU.
+  const mapSize = 20000; 
 
   useEffect(() => {
     setIsMounted(true);
@@ -65,47 +68,47 @@ export default function MainWorldPage() {
       <KeyboardListener />
       <LoadingScreen />
 
-      {/* ✅ USE THIS INSTEAD ✅ */}
       <StartOverlay 
         show={isMobile && !hasStarted} 
         onStart={handleStart} 
       />
 
-      {/* 2. CONTROLLERS */}
       <MobileControls />
 
       <Canvas shadows>
         <Suspense fallback={null}>
-          <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
-          <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
+          {/* ✅ 2. Fixed Camera: Adjusted 'far' to match the new MapSize */}
+          <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
+          
+          {/* ✅ 3. Fixed Sky: Set distance to mapSize for a clean horizon */}
+          <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={2} />
+          
           <Environment preset="city" background={false} />
-          <ambientLight intensity={0.4} />
-          <pointLight position={[10, 10, 10]} castShadow />
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} castShadow intensity={1.5} />
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
+            {/* ✅ 4. The Road: Lifted to y=0.5 to prevent it from sinking into the floor */}
+            <Road position={[0, 0.5, -100]} length={1000} />
 
-{/* Place this exactly where the player spawns or very close to it */}
-<Road position={[0, 2, -50]} length={500} />
-
-            
-            {/* ✅ BILLBOARD ADDED HERE ✅ */}
+            {/* ✅ Billboard */}
             <Billboard 
-              position={[5, 0, -10]} 
-              rotation={[0, -Math.PI / 4, 0]} 
+              position={[8, 0, -20]} 
+              rotation={[0, -Math.PI / 6, 0]} 
               title="NOVELARC" 
               description="Visualizing the Future"
             />
-
-
             
             <Player />
+
+            {/* World Borders based on new MapSize */}
             <RigidBody type="fixed">
-              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
-              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, mapSize]} />
-              <CuboidCollider args={[10, 1000, mapSize]} position={[mapSize, 500, 0]} />
-              <CuboidCollider args={[10, 1000, mapSize]} position={[-mapSize, 500, 0]} />
+              <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, -mapSize]} />
+              <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, mapSize]} />
+              <CuboidCollider args={[10, 100, mapSize]} position={[mapSize, 50, 0]} />
+              <CuboidCollider args={[10, 100, mapSize]} position={[-mapSize, 50, 0]} />
             </RigidBody>
           </Physics>
 
