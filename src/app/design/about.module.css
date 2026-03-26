@@ -1,56 +1,139 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
 
+/* --- Root Container Logic --- */
 .container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 4rem 1.5rem;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
   position: relative;
 }
 
-.contentWrapper {
-  max-width: 1000px;
+/* --- Mobile Dedicated Styles --- */
+.mobileContainer {
   width: 100%;
+  min-height: 100vh;
+  background-color: #f2f2f2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: fadeInContent 1.2s ease-out forwards;
+  justify-content: flex-start;
+  /* Positions title at approximately top 20% of viewport */
+  padding: 20vh 1.5rem 5rem 1.5rem; 
+  box-sizing: border-box;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.mainTitle {
+/* Scroll Progress Bar */
+.progressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: #000;
+  z-index: 1000;
+  transition: width 0.1s ease-out;
+}
+
+/* --- Typography & Content --- */
+.mobileTitle {
   font-family: 'Cormorant Garamond', serif;
-  color: #000000;
-  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  color: #000;
+  font-size: 2.4rem;
   font-style: italic;
   font-weight: 300;
   text-align: center;
-  line-height: 1.1;
-  margin-bottom: 2.5rem; /* Space between Title and Button */
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin-bottom: 2.5rem;
+  text-transform: none; /* Ensures sentence case as requested */
 }
 
-/* --- Enter the World Button --- */
-.enterButton {
-  background-color: #000000;
-  color: #ffffff;
+.buttonWrapper {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 6rem;
+}
+
+.mobileEnterButton {
+  background-color: #000;
+  color: #fff;
+  width: 100%;
+  padding: 1.2rem;
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5em;
-  padding: 1.4rem 3.5rem;
+  letter-spacing: 0.4em;
   border: none;
-  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* --- Info Sections & Animations --- */
+.mobileInfoStack {
+  width: 100%;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.mobileSection {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: all 0.9s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform, opacity;
+}
+
+/* Triggered by IntersectionObserver in JS */
+.mobileSection.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobileSectionTitle {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  margin-bottom: 1.2rem;
+}
+
+.mobileDescription {
+  font-family: 'Montserrat', sans-serif;
+  color: #000;
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
+/* --- Footer --- */
+.mobileFooter {
+  margin-top: 6rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1em;
+  opacity: 0.2;
+  text-align: center;
+}
+
+/* --- Desktop Specific Overrides (Optional Safety) --- */
+@media (min-width: 769px) {
+  .mobileContainer {
+    display: none;
+  }
+}
 .enterButton:hover {
   background-color: #333333;
   transform: translateY(-3px);
