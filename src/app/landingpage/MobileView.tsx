@@ -7,7 +7,7 @@ import HouseImage from "../../../public/image_1.png";
 export default function MobileView() {
   return (
     <main className={styles.container}>
-      {/* Background Image (Maintaining clarity and light) */}
+      {/* Background Layer */}
       <div className={styles.backgroundWrapper}>
         <Image 
           src={HouseImage}
@@ -19,10 +19,10 @@ export default function MobileView() {
         <div className={styles.overlay} />
       </div>
 
-      {/* SEO Optimized Header Section */}
+      {/* Title positioned at Top 20% */}
       <section className={styles.content}>
         <h1 className={styles.title}>
-         Architecture<span className={styles.titleItalic}>Design</span>
+          Architecture<span className={styles.titleItalic}>Design</span>
         </h1>
         
         <h2 className={styles.subtitle}>
