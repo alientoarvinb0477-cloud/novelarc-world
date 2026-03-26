@@ -25,7 +25,7 @@ export default function StartOverlay({ onStart, show }: StartOverlayProps) {
   return (
     <div className={`${styles.container} ${isclosing ? styles.fadeOut : ""}`}>
       <div className={styles.notification}>
-        <h1 className={styles.title}>Novelarcdigitalera.com</h1>
+        <h1 className={styles.title}>novelarcdigitalera.com</h1>
         
         <div className={styles.statusLine}>
           <div className={styles.line} />
