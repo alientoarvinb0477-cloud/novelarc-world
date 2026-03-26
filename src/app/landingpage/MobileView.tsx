@@ -16,7 +16,7 @@ export default function MobileView() {
           priority
           className={styles.backgroundImage}
         />
-        {/* Subtle darkening for better contrast */}
+        {/* Light overlay for black text support */}
         <div className={styles.overlay} />
       </div>
 
@@ -32,8 +32,8 @@ export default function MobileView() {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="absolute bottom-10 z-10 opacity-30">
-        <div className="text-[7px] font-bold uppercase tracking-[1em] text-white">
+      <footer className="absolute bottom-10 z-10 opacity-40">
+        <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
           PHILIPPINES • 2026
         </div>
       </footer>
