@@ -7,32 +7,31 @@ import HouseImage from "../../../public/image_1.png";
 export default function MobileView() {
   return (
     <main className={styles.container}>
-      {/* Background Image Layer */}
+      {/* Background Layer (Maintains light and clarity) */}
       <div className={styles.backgroundWrapper}>
         <Image 
           src={HouseImage}
-          alt="Novelarc Architecture"
+          alt="Novelarc"
           fill
           priority
           className={styles.backgroundImage}
         />
-        {/* Light architectural overlay */}
         <div className={styles.overlay} />
       </div>
 
-      {/* Massive 3D Centered Text */}
+      {/* Title positioned at Top 20% */}
       <section className={styles.content}>
         <h1 className={styles.title}>
           NOVEL<span className={styles.titleItalic}>ARC</span>
         </h1>
         
         <h2 className={styles.subtitle}>
-          Premium Digital Architecture<br />Selection
+          Premium Digital Architecture
         </h2>
       </section>
 
-      {/* Footer Branding */}
-      <footer className="absolute bottom-10 z-10 opacity-40">
+      {/* Branding Footer */}
+      <footer className="absolute bottom-10 z-10 opacity-50">
         <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
           PHILIPPINES • 2026
         </div>
