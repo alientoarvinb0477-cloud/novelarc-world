@@ -1,45 +1,116 @@
 "use client";
 
-import React from "react";
-import { RigidBody } from "@react-three/rapier";
+import React, { Suspense, useEffect, useState } from "react";
+import { Canvas } from "@react-three/fiber";
+import { PointerLockControls, Sky, Environment, PerspectiveCamera, useGLTF } from "@react-three/drei";
+import { Physics, RigidBody, CuboidCollider } from "@react-three/rapier";
+import { useStore } from "../../../hooks/useStore";
+import Player from "../../../components/world/Player";
+import LoadingScreen from "../../../components/world/LoadingScreen";
+import MobileControls from "../../../components/world/MobileControls";
+import Billboard from "../../displayObject/Billboard";
+import Road from "../../displayObject/Road";
+import LightPost from "../../displayObject/LightPost"; // ✅ New Import
+import StartOverlay from "../../../components/world/StartOverlay";
 
-export default function LightPost({ position = [0, 0, 0] }) {
+function WorldFloor() {
+  const { scene } = useGLTF("/floor.glb");
   return (
-    <group position={position}>
-      <RigidBody type="fixed" colliders="cuboid">
-        {/* The Pole */}
-        <mesh castShadow position={[0, 4, 0]}>
-          <cylinderGeometry args={[0.1, 0.15, 8, 8]} />
-          <meshStandardMaterial color="#333333" metalness={0.8} roughness={0.2} />
-        </mesh>
+    <RigidBody type="fixed" colliders="trimesh">
+      <primitive object={scene} />
+    </RigidBody>
+  );
+}
 
-        {/* The Arm */}
-        <mesh castShadow position={[0.7, 7.8, 0]} rotation={[0, 0, Math.PI / 2]}>
-          <cylinderGeometry args={[0.08, 0.08, 1.5, 8]} />
-          <meshStandardMaterial color="#333333" />
-        </mesh>
+function KeyboardListener() {
+  const setMove = useStore((state) => state.setMove);
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent, value: boolean) => {
+      if (e.code === "KeyW" || e.code === "ArrowUp") setMove("forward", value);
+      if (e.code === "KeyS" || e.code === "ArrowDown") setMove("backward", value);
+      if (e.code === "KeyA" || e.code === "ArrowLeft") setMove("left", value);
+      if (e.code === "KeyD" || e.code === "ArrowRight") setMove("right", value);
+      if (e.code === "Space") setMove("jump", value);
+    };
+    window.addEventListener("keydown", (e) => handleKey(e, true));
+    window.addEventListener("keyup", (e) => handleKey(e, false));
+    return () => {
+      window.removeEventListener("keydown", (e) => handleKey(e, true));
+      window.removeEventListener("keyup", (e) => handleKey(e, false));
+    };
+  }, [setMove]);
+  return null;
+}
 
-        {/* The Lamp Head */}
-        <mesh position={[1.4, 7.6, 0]}>
-          <boxGeometry args={[0.6, 0.2, 0.4]} />
-          <meshStandardMaterial color="#222222" />
-        </mesh>
+export default function MainWorldPage() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const mapSize = 20000; 
 
-        {/* Functional Light Source */}
-        <pointLight 
-          position={[1.4, 7.4, 0]} 
-          intensity={20} 
-          distance={25} 
-          color="#fff4d6" 
-          castShadow 
-        />
-        
-        {/* Visual Bulb */}
-        <mesh position={[1.4, 7.4, 0]}>
-          <sphereGeometry args={[0.15, 16, 16]} />
-          <meshStandardMaterial emissive="#fff4d6" emissiveIntensity={2} color="white" />
-        </mesh>
-      </RigidBody>
-    </group>
+  useEffect(() => {
+    setIsMounted(true);
+    setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
+
+  const handleStart = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) element.requestFullscreen();
+    setHasStarted(true);
+  };
+
+  if (!isMounted) return <div className="w-full h-screen bg-black" />;
+
+  return (
+    <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
+      <KeyboardListener />
+      <LoadingScreen />
+
+      <StartOverlay show={isMobile && !hasStarted} onStart={handleStart} />
+      <MobileControls />
+
+      <Canvas shadows>
+        <Suspense fallback={null}>
+          <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
+          
+          {/* Subtle Sky for better Light Post visibility */}
+          <Sky distance={mapSize} sunPosition={[0, -1, 0]} mieCoefficient={0.01} rayleigh={0.5} />
+          <fog attach="fog" args={["#111", 10, 500]} />
+          
+          <Environment preset="city" background={false} />
+          <ambientLight intensity={0.2} />
+
+          <Physics gravity={[0, -9.81, 0]}>
+            <WorldFloor />
+
+            {/* The Main Road */}
+            <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
+
+            {/* ✅ LIGHT POSTS: Spawning 15 posts along the road side ✅ */}
+            {[...Array(15)].map((_, i) => (
+              <LightPost key={i} position={[-8.5, 1.0, -i * 50]} />
+            ))}
+
+            <Billboard 
+              position={[10, 0, -30]} 
+              rotation={[0, -Math.PI / 6, 0]} 
+              title="NOVELARC" 
+              description="Visualizing the Future"
+            />
+            
+            <Player />
+
+            <RigidBody type="fixed">
+              <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, -mapSize]} />
+              <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, mapSize]} />
+              <CuboidCollider args={[10, 100, mapSize]} position={[mapSize, 50, 0]} />
+              <CuboidCollider args={[10, 100, mapSize]} position={[-mapSize, 50, 0]} />
+            </RigidBody>
+          </Physics>
+
+          {!isMobile && <PointerLockControls />}
+        </Suspense>
+      </Canvas>
+    </div>
   );
 }
