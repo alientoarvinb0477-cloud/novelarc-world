@@ -9,13 +9,13 @@ export default function AboutSystemPage() {
     <main className={styles.container}>
       <div className={styles.contentWrapper}>
         
-        {/* 1. SEO OPTIMIZED MAIN TITLE */}
+        {/* 1. MAIN TITLE */}
         <h1 className={styles.mainTitle}>
           Visualizing the future of <br/> Philippine Living.
         </h1>
 
-        {/* 2. THE BUTTON */}
-        <div className={styles.buttonContainer}>
+        {/* 2. THE BUTTON (Now directly under the title) */}
+        <div className="mb-16">
           <Link href="/world/main-world">
             <button className={styles.enterButton}>
               Enter the World of 3D
@@ -46,7 +46,7 @@ export default function AboutSystemPage() {
       </div>
       
       {/* Subtle Footer */}
-      <footer className={styles.footer}>
+      <footer className="absolute bottom-10 opacity-20">
         <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
           ARC-V1 • 2026
         </div>
