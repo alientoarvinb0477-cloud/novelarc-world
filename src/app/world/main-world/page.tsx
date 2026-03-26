@@ -10,6 +10,7 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
+import LightPost from "../../displayObject/LightPost"; // ✅ Added Import
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
@@ -90,8 +91,23 @@ export default function MainWorldPage() {
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
-            {/* ✅ 4. The Road: Lifted to y=0.5 to prevent it from sinking into the floor */}
+{/* Road lifted to y=1.2 as requested */}
             <Road position={[0, 1.2, -100]} length={1000} />
+
+            {/* ✅ ADDED: Alternating Light Posts along the road side ✅ */}
+            {[...Array(20)].map((_, i) => {
+              const isRightSide = i % 2 !== 0;
+              const xPos = isRightSide ? 8.5 : -8.5; // Positions them on left/right edges
+              const rotY = isRightSide ? Math.PI : 0; // Rotates right side 180° to face road
+
+              return (
+                <LightPost 
+                  key={i} 
+                  position={[xPos, 1.2, -i * 60]} // y=1.2 matches road height
+                  rotation={[0, rotY, 0]} 
+                />
+              );
+            })}
 
             {/* ✅ Billboard */}
             <Billboard 
