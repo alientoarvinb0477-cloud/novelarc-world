@@ -7,25 +7,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Perfect vertical centering */
+  justify-content: center;
 }
 
-/* Timer Bar at top */
-.topProgress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background-color: #fff;
-  z-index: 1000;
-  animation: loadProgress 4.5s linear forwards;
-}
-
-@keyframes loadProgress {
-  0% { width: 0%; }
-  100% { width: 100%; }
-}
-
+/* --- 1. Background Image (The "Safe" Zoom) --- */
 .backgroundWrapper {
   position: absolute;
   inset: 0;
@@ -33,22 +18,33 @@
 }
 
 .backgroundImage {
+  /* This ensures the full image is used to 'cover' the screen without distortion */
   object-fit: cover;
-  /* Slight zoom effect for mobile depth */
-  animation: mobileZoom 10s ease-out forwards;
+  object-position: center; 
+  /* Slow, high-end cinematic zoom */
+  animation: cinematicZoom 10s ease-out forwards;
 }
 
-@keyframes mobileZoom {
-  from { transform: scale(1.1); } /* Start slightly zoomed in */
-  to { transform: scale(1.2); }
+@keyframes cinematicZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); } /* Subtle zoom so it doesn't get blurry */
 }
 
+/* Dark Overlay to make the massive text pop */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+  z-index: 1;
+}
+
+/* --- 2. Content (The Massive Text) --- */
 .content {
   position: relative;
   z-index: 10;
   text-align: center;
-  padding: 0 2rem;
-  /* Entrance and Exit animations */
+  width: 100%;
+  padding: 0 1rem;
   animation: 
     fadeIn 2s ease-out forwards,
     fadeOut 0.5s ease-in forwards 4s;
@@ -57,50 +53,41 @@
 .title {
   font-family: 'Cormorant Garamond', serif;
   color: #fff;
-  /* Massive impactful size based on screen width */
-  font-size: clamp(4.5rem, 22vw, 7rem); 
+  /* Extremely large font size */
+  font-size: clamp(5.5rem, 28vw, 10rem); 
   font-weight: 300;
-  line-height: 0.85;
-  letter-spacing: -0.05em;
+  line-height: 0.75;
+  letter-spacing: -0.06em;
   margin-bottom: 2rem;
-  /* Subtle glow to separate from background */
-  text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  text-shadow: 0 15px 40px rgba(0,0,0,0.5);
 }
 
 .titleItalic {
   font-style: italic;
-  display: block; /* Moves ARC to its own line for better scale */
-  margin-left: 1.5rem;
-  color: #d6d3d1; /* stone-300 */
+  display: block;
+  color: #e5e5e5;
+  margin-top: -0.5rem; /* Tightens the gap between NOVEL and ARC */
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.6rem; /* Slightly smaller to contrast with the huge title */
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.55rem;
   font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 0.45em;
-  line-height: 2.2;
-  max-width: 280px;
+  letter-spacing: 0.5em;
+  line-height: 2.5;
+  max-width: 250px;
   margin: 0 auto;
 }
 
-.footerContainer {
-  position: absolute;
-  bottom: 2rem;
-  z-index: 10;
-  opacity: 0.3;
-  animation: fadeOut 0.5s ease-in forwards 4s;
-}
-
-/* Shared Animations */
+/* --- Animations --- */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-10px); }
+  from { opacity: 1; }
+  to { opacity: 0; transform: scale(1.05); }
 }
