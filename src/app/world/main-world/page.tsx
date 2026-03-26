@@ -87,7 +87,7 @@ export default function MainWorldPage() {
 
 
 {/* Place this exactly where the player spawns or very close to it */}
-<Road position={[0, 10, -50]} length={500} />
+<Road position={[0, 2, -50]} length={500} />
 
             
             {/* ✅ BILLBOARD ADDED HERE ✅ */}
