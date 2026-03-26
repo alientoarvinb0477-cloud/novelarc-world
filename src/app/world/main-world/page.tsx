@@ -46,6 +46,8 @@ export default function MainWorldPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
+  
+  // Adjusted mapSize to prevent "Black Sky" math errors
   const mapSize = 20000; 
 
   useEffect(() => {
@@ -73,7 +75,11 @@ export default function MainWorldPage() {
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
+          {/* Restored Day Sky */}
           <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={3} />
+          
+          {/* Adjusted Fog: Starts 50 units away so the area around the player is clear */}
+          <fog attach="fog" args={["#87ceeb", 50, 1500]} />
           
           <Environment preset="city" background={false} />
           <ambientLight intensity={0.5} />
@@ -82,25 +88,26 @@ export default function MainWorldPage() {
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
-            <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
+            {/* The Main Road */}
+            <Road position={[0, 1.0, -100]} length={3000} roadWidth={15} />
 
-{/* Inside your <Physics> tag */}
-{[...Array(20)].map((_, i) => {
-  const isLeft = i % 2 === 0;
-  const xPos = isLeft ? -7.5 : 7.5; // Adjusted to sit exactly on the white lines
-  const rotationY = isLeft ? 0 : Math.PI; // Flip 180 degrees for the right side
+            {/* Alternating Light Posts */}
+            {[...Array(25)].map((_, i) => {
+              const isLeft = i % 2 === 0;
+              const xPos = isLeft ? -8.5 : 8.5; // Left or Right side of road
+              const rotY = isLeft ? 0 : Math.PI; // Flip 180 degrees for the right side
 
-  return (
-    <LightPost 
-      key={i} 
-      position={[xPos, 1.0, -i * 40]} 
-      rotation={[0, rotationY, 0]} 
-    />
-  );
-})}
+              return (
+                <LightPost 
+                  key={i} 
+                  position={[xPos, 1.0, -i * 60]} // Spaced 60 units apart
+                  rotation={[0, rotY, 0]} 
+                />
+              );
+            })}
 
             <Billboard 
-              position={[10, 0, -30]} 
+              position={[12, 0, -40]} 
               rotation={[0, -Math.PI / 6, 0]} 
               title="NOVELARC" 
               description="Visualizing the Future"
@@ -108,6 +115,7 @@ export default function MainWorldPage() {
             
             <Player />
 
+            {/* World Boundaries */}
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, -mapSize]} />
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, mapSize]} />
