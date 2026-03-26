@@ -8,11 +8,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  /* Title starts at 20% from the top */
-  padding: 20vh 2rem 8rem 2rem; 
+  padding: 20vh 2rem 5rem 2rem; 
   box-sizing: border-box;
   overflow-y: auto;
-  position: relative;
 }
 
 .mobileTitle {
@@ -29,7 +27,7 @@
 .buttonWrapper {
   width: 100%;
   max-width: 300px;
-  margin-bottom: 5rem; /* Space between button and Info Stack */
+  margin-bottom: 5rem;
 }
 
 .mobileEnterButton {
@@ -46,24 +44,15 @@
   border-radius: 2px;
 }
 
-/* --- THE CENTERED INFO STACK --- */
 .mobileInfoStack {
   width: 100%;
-  max-width: 320px; /* Keeps text lines short and elegant */
+  max-width: 320px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centers the content */
-  text-align: center;   /* Centers the text */
-  gap: 4rem;
+  align-items: center;
+  text-align: center;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   padding-top: 4rem;
-}
-
-.mobileSection {
-  width: 100%;
-  /* Removed initial opacity:0 to ensure it's visible immediately */
-  opacity: 1; 
-  transform: translateY(0);
 }
 
 .mobileSectionTitle {
@@ -72,7 +61,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.25em;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
   color: #000;
 }
 
@@ -85,10 +74,10 @@
 }
 
 .mobileFooter {
-  margin-top: 6rem;
+  margin-top: auto; /* Pushes footer to the bottom of the visible screen */
+  padding: 4rem 0 2rem 0;
   font-size: 7px;
   letter-spacing: 1em;
   opacity: 0.3;
   text-align: center;
-  color: #000;
 }
