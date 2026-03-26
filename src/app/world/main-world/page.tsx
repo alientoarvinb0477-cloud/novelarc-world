@@ -9,6 +9,7 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard"; // ✅ Added Billboard import
+import Road from "../../displayObject/Road";
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
@@ -84,6 +85,10 @@ export default function MainWorldPage() {
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
+
+<Road position={[15, 0, 0]} length={300} />
+
+            
             {/* ✅ BILLBOARD ADDED HERE ✅ */}
             <Billboard 
               position={[5, 0, -10]} 
