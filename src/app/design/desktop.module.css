@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
+
 .container {
   position: relative;
   width: 100%;
@@ -7,17 +9,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Perfect vertical centering */
+  justify-content: center;
 }
 
-/* Timer Bar at top */
+/* --- 1. Automatic Timer Bar --- */
 .topProgress {
   position: fixed;
   top: 0;
   left: 0;
-  height: 2px;
+  height: 3px;
   background-color: #fff;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
   z-index: 1000;
+  /* Matches your 4.5s router timer */
   animation: loadProgress 4.5s linear forwards;
 }
 
@@ -26,6 +30,7 @@
   100% { width: 100%; }
 }
 
+/* --- 2. Background Image Layer --- */
 .backgroundWrapper {
   position: absolute;
   inset: 0;
@@ -34,21 +39,29 @@
 
 .backgroundImage {
   object-fit: cover;
-  /* Slight zoom effect for mobile depth */
-  animation: mobileZoom 10s ease-out forwards;
+  object-position: center;
+  filter: brightness(0.55) saturate(0.85);
+  /* Slow cinematic zoom */
+  animation: slowZoom 10s ease-out forwards;
 }
 
-@keyframes mobileZoom {
-  from { transform: scale(1.1); } /* Start slightly zoomed in */
-  to { transform: scale(1.2); }
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
 }
 
+/* --- 3. Content Overlay (With Fade In & Out) --- */
 .content {
   position: relative;
   z-index: 10;
+  width: 100%;
+  max-width: 1100px;
   text-align: center;
-  padding: 0 2rem;
-  /* Entrance and Exit animations */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Fades in for 2s, then fades out starting at 4s */
   animation: 
     fadeIn 2s ease-out forwards,
     fadeOut 0.5s ease-in forwards 4s;
@@ -57,43 +70,52 @@
 .title {
   font-family: 'Cormorant Garamond', serif;
   color: #fff;
-  font-size: 4rem;
+  font-size: clamp(3.5rem, 7vw, 8.5rem);
   font-weight: 300;
-  line-height: 0.8;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  margin-bottom: 2.5rem;
+  user-select: none;
 }
 
 .titleItalic {
   font-style: italic;
-  opacity: 0.8;
+  color: #d6d3d1;
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.65rem;
+  color: #e7e5e4;
+  font-size: 0.8rem;
   font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  line-height: 2;
+  letter-spacing: 0.4em;
+  line-height: 2.2;
+  max-width: 600px;
 }
 
+/* --- 4. Footer Layer (Coordinated Fade Out) --- */
 .footerContainer {
   position: absolute;
-  bottom: 2rem;
-  z-index: 10;
+  bottom: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
   opacity: 0.3;
   animation: fadeOut 0.5s ease-in forwards 4s;
 }
 
-/* Shared Animations */
+/* --- 5. Shared Animations --- */
+
+/* Standard Entrance */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Cinematic Exit */
 @keyframes fadeOut {
   from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 0; transform: translateY(-15px); }
 }
