@@ -10,7 +10,7 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
-import LightPost from "../../displayObject/LightPost"; // ✅ New Import
+import LightPost from "../../displayObject/LightPost";
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
@@ -73,22 +73,21 @@ export default function MainWorldPage() {
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
-          {/* Subtle Sky for better Light Post visibility */}
-          <Sky distance={mapSize} sunPosition={[0, -1, 0]} mieCoefficient={0.01} rayleigh={0.5} />
-          <fog attach="fog" args={["#111", 10, 500]} />
+          {/* ✅ Bright Day Sky Restored ✅ */}
+          <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={3} />
           
           <Environment preset="city" background={false} />
-          <ambientLight intensity={0.2} />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
-            {/* The Main Road */}
             <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
 
-            {/* ✅ LIGHT POSTS: Spawning 15 posts along the road side ✅ */}
+            {/* ✅ Stylish Lamps Every 60 Units ✅ */}
             {[...Array(15)].map((_, i) => (
-              <LightPost key={i} position={[-8.5, 1.0, -i * 50]} />
+              <LightPost key={i} position={[-8.5, 1.0, -i * 60]} />
             ))}
 
             <Billboard 
