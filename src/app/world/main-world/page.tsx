@@ -9,103 +9,108 @@ import Player from "../../../components/world/Player";
 import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import House from "../../house/House";
+import Billboard from "../../displayObject/Billboard"; // ✅ Added Billboard import
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
-  const { scene } = useGLTF("/floor.glb");
-  return (
-    <RigidBody type="fixed" colliders="trimesh">
-      <primitive object={scene} />
-    </RigidBody>
-  );
+  const { scene } = useGLTF("/floor.glb");
+  return (
+    <RigidBody type="fixed" colliders="trimesh">
+      <primitive object={scene} />
+    </RigidBody>
+  );
 }
 
 function KeyboardListener() {
-  const setMove = useStore((state) => state.setMove);
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent, value: boolean) => {
-      if (e.code === "KeyW" || e.code === "ArrowUp") setMove("forward", value);
-      if (e.code === "KeyS" || e.code === "ArrowDown") setMove("backward", value);
-      if (e.code === "KeyA" || e.code === "ArrowLeft") setMove("left", value);
-      if (e.code === "KeyD" || e.code === "ArrowRight") setMove("right", value);
-      if (e.code === "Space") setMove("jump", value);
-    };
-    window.addEventListener("keydown", (e) => handleKey(e, true));
-    window.addEventListener("keyup", (e) => handleKey(e, false));
-    return () => {
-      window.removeEventListener("keydown", (e) => handleKey(e, true));
-      window.removeEventListener("keyup", (e) => handleKey(e, false));
-    };
-  }, [setMove]);
-  return null;
+  const setMove = useStore((state) => state.setMove);
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent, value: boolean) => {
+      if (e.code === "KeyW" || e.code === "ArrowUp") setMove("forward", value);
+      if (e.code === "KeyS" || e.code === "ArrowDown") setMove("backward", value);
+      if (e.code === "KeyA" || e.code === "ArrowLeft") setMove("left", value);
+      if (e.code === "KeyD" || e.code === "ArrowRight") setMove("right", value);
+      if (e.code === "Space") setMove("jump", value);
+    };
+    window.addEventListener("keydown", (e) => handleKey(e, true));
+    window.addEventListener("keyup", (e) => handleKey(e, false));
+    return () => {
+      window.removeEventListener("keydown", (e) => handleKey(e, true));
+      window.removeEventListener("keyup", (e) => handleKey(e, false));
+    };
+  }, [setMove]);
+  return null;
 }
 
 export default function MainWorldPage() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
-  const mapSize = 450000;
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const mapSize = 450000;
 
-  useEffect(() => {
-    setIsMounted(true);
-    setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
-  }, []);
+  useEffect(() => {
+    setIsMounted(true);
+    setIsMobile('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
 
-  const handleStart = () => {
-    const element = document.documentElement;
-    if (element.requestFullscreen) element.requestFullscreen();
-    setHasStarted(true);
-  };
+  const handleStart = () => {
+    const element = document.documentElement;
+    if (element.requestFullscreen) element.requestFullscreen();
+    setHasStarted(true);
+  };
 
-  if (!isMounted) return <div className="w-full h-screen bg-black" />;
+  if (!isMounted) return <div className="w-full h-screen bg-black" />;
 
-  return (
-    <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
-      <KeyboardListener />
-      <LoadingScreen />
+  return (
+    <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
+      <KeyboardListener />
+      <LoadingScreen />
 
-      {/* ✅ USE THIS INSTEAD ✅ */}
-<StartOverlay 
-  show={isMobile && !hasStarted} 
-  onStart={handleStart} 
-/>
-      
+      {/* ✅ USE THIS INSTEAD ✅ */}
+      <StartOverlay 
+        show={isMobile && !hasStarted} 
+        onStart={handleStart} 
+      />
 
+      {/* 2. CONTROLLERS */}
+      <MobileControls />
 
-      {/* 2. CONTROLLERS */}
-      <MobileControls />
+      <Canvas shadows>
+        <Suspense fallback={null}>
+          <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
+          <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
+          <Environment preset="city" background={false} />
+          <ambientLight intensity={0.4} />
+          <pointLight position={[10, 10, 10]} castShadow />
 
-      <Canvas shadows>
-        <Suspense fallback={null}>
-          <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={1000000} />
-          <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
-          <Environment preset="city" background={false} />
-          <ambientLight intensity={0.4} />
-          <pointLight position={[10, 10, 10]} castShadow />
+          <Physics gravity={[0, -9.81, 0]}>
+            <WorldFloor />
 
-          <Physics gravity={[0, -9.81, 0]}>
-            <WorldFloor />
+            {/* ✅ BILLBOARD ADDED HERE ✅ */}
+            <Billboard 
+              position={[5, 0, -10]} 
+              rotation={[0, -Math.PI / 4, 0]} 
+              title="NOVELARC" 
+              description="Visualizing the Future"
+            />
 
-{/* Place your first house */}
-<House 
-    id="starter-home" 
-    position={[15, 0, -15]} 
-  />
+            {/* Place your first house */}
+            <House 
+              id="starter-home" 
+              position={[15, 0, -15]} 
+            />
+            
+            <Player />
+            <RigidBody type="fixed">
+              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
+              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, mapSize]} />
+              <CuboidCollider args={[10, 1000, mapSize]} position={[mapSize, 500, 0]} />
+              <CuboidCollider args={[10, 1000, mapSize]} position={[-mapSize, 500, 0]} />
+            </RigidBody>
+          </Physics>
 
-
-            
-            <Player />
-            <RigidBody type="fixed">
-              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, -mapSize]} />
-              <CuboidCollider args={[mapSize, 1000, 10]} position={[0, 500, mapSize]} />
-              <CuboidCollider args={[10, 1000, mapSize]} position={[mapSize, 500, 0]} />
-              <CuboidCollider args={[10, 1000, mapSize]} position={[-mapSize, 500, 0]} />
-            </RigidBody>
-          </Physics>
-
-          {!isMobile && <PointerLockControls />}
-        </Suspense>
-      </Canvas>
-    </div>
-  );
+          {!isMobile && <PointerLockControls />}
+        </Suspense>
+      </Canvas>
+    </div>
+  );
 }
