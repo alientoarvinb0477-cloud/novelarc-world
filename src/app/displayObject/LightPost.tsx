@@ -3,7 +3,7 @@
 import React from "react";
 import { RigidBody } from "@react-three/rapier";
 
-export default function LightPost({ position = [0, 0, 0] as [number, number, number] }) {
+export default function LightPost({ position = [0, 0, 0] }) {
   return (
     <group position={position}>
       <RigidBody type="fixed" colliders="cuboid">
@@ -25,11 +25,11 @@ export default function LightPost({ position = [0, 0, 0] as [number, number, num
           <meshStandardMaterial color="#222222" />
         </mesh>
 
-        {/* The Actual Light Source */}
+        {/* Functional Light Source */}
         <pointLight 
           position={[1.4, 7.4, 0]} 
-          intensity={15} 
-          distance={20} 
+          intensity={20} 
+          distance={25} 
           color="#fff4d6" 
           castShadow 
         />
