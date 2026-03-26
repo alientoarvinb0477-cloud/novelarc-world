@@ -8,7 +8,7 @@ export default function Road({ position = [0, 1.0, 0] as [number, number, number
   return (
     <group position={position}>
       <RigidBody type="fixed" colliders="cuboid">
-        {/* ASPHALT SURFACE */}
+        {/* Asphalt Surface */}
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[roadWidth, length]} />
           <MeshReflectorMaterial
@@ -23,18 +23,18 @@ export default function Road({ position = [0, 1.0, 0] as [number, number, number
           />
         </mesh>
 
-        {/* CENTER YELLOW LINE */}
-        <mesh position={[0, 0.02, 0]}>
+        {/* Center Yellow Line - Elevated slightly more to stop "damage" look */}
+        <mesh position={[0, 0.05, 0]}>
           <boxGeometry args={[0.2, 0.01, length]} />
           <meshStandardMaterial color="#ffcc00" emissive="#ffcc00" emissiveIntensity={0.2} />
         </mesh>
 
-        {/* WHITE BOUNDARY LINES */}
-        <mesh position={[-(roadWidth / 2 - 0.5), 0.02, 0]}>
+        {/* White Boundary Lines - Elevated to 0.04 to prevent flickering */}
+        <mesh position={[-(roadWidth / 2 - 0.5), 0.04, 0]}>
           <boxGeometry args={[0.2, 0.01, length]} />
           <meshStandardMaterial color="white" opacity={0.8} transparent />
         </mesh>
-        <mesh position={[(roadWidth / 2 - 0.5), 0.02, 0]}>
+        <mesh position={[(roadWidth / 2 - 0.5), 0.04, 0]}>
           <boxGeometry args={[0.2, 0.01, length]} />
           <meshStandardMaterial color="white" opacity={0.8} transparent />
         </mesh>
