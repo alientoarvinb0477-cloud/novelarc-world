@@ -1,13 +1,21 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import styles from "../design/about.module.css";
 
 export default function AboutMobile() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
+    // 1. SCROLL PROGRESS LOGIC
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setScrollProgress(progress);
+    };
+
+    // 2. INTERSECTION OBSERVER LOGIC
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -16,26 +24,39 @@ export default function AboutMobile() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.15 } // Slightly higher threshold for a smoother trigger
     );
 
     const sections = document.querySelectorAll(`.${styles.mobileSection}`);
     sections.forEach((section) => observer.observe(section));
 
-    return () => observer.disconnect();
+    window.addEventListener("scroll", handleScroll);
+    
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
     <main className={styles.mobileContainer}>
+      {/* Scroll Progress Bar */}
+      <div 
+        className={styles.progressBar} 
+        style={{ width: `${scrollProgress}%` }} 
+      />
+
       <h1 className={styles.mobileTitle}>
         Visualizing the future of <br/> Philippine Living.
       </h1>
 
-      <Link href="/world/main-world" className="w-full">
-        <button className={styles.mobileEnterButton}>
-          Enter the World of 3D
-        </button>
-      </Link>
+      <div className={styles.buttonWrapper}>
+        <Link href="/world/main-world" className="w-full">
+          <button className={styles.mobileEnterButton}>
+            Enter the World of 3D
+          </button>
+        </Link>
+      </div>
 
       <div className={styles.mobileInfoStack}>
         <div className={styles.mobileSection}>
