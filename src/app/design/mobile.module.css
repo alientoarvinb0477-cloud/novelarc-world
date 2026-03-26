@@ -1,17 +1,29 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&family=Montserrat:wght@100;300;600&display=swap');
-
 .container {
   position: relative;
   width: 100%;
-  height: 100dvh; /* Dynamic viewport for mobile browsers */
+  height: 100vh;
   background-color: #000;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 2rem;
+  justify-content: center; /* Perfect vertical centering */
+}
+
+/* Timer Bar at top */
+.topProgress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background-color: #fff;
+  z-index: 1000;
+  animation: loadProgress 4.5s linear forwards;
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  100% { width: 100%; }
 }
 
 .backgroundWrapper {
@@ -22,75 +34,73 @@
 
 .backgroundImage {
   object-fit: cover;
-  object-position: center;
-  filter: brightness(0.6) saturate(0.8);
+  /* Slight zoom effect for mobile depth */
+  animation: mobileZoom 10s ease-out forwards;
+}
+
+@keyframes mobileZoom {
+  from { transform: scale(1.1); } /* Start slightly zoomed in */
+  to { transform: scale(1.2); }
 }
 
 .content {
   position: relative;
   z-index: 10;
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: fadeInMobile 1.2s ease-out forwards, floatMobile 6s ease-in-out infinite 1.2s;
+  padding: 0 2rem;
+  /* Entrance and Exit animations */
+  animation: 
+    fadeIn 2s ease-out forwards,
+    fadeOut 0.5s ease-in forwards 4s;
 }
 
 .title {
   font-family: 'Cormorant Garamond', serif;
   color: #fff;
-  font-size: 3.2rem;
+  /* Massive impactful size based on screen width */
+  font-size: clamp(4.5rem, 22vw, 7rem); 
   font-weight: 300;
-  line-height: 1;
-  letter-spacing: -0.02em;
-  margin-bottom: 1.5rem;
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  margin-bottom: 2rem;
+  /* Subtle glow to separate from background */
+  text-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
 .titleItalic {
   font-style: italic;
-  color: #d6d3d1;
+  display: block; /* Moves ARC to its own line for better scale */
+  margin-left: 1.5rem;
+  color: #d6d3d1; /* stone-300 */
 }
 
 .subtitle {
   font-family: 'Montserrat', sans-serif;
-  color: #e7e5e4;
-  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.6rem; /* Slightly smaller to contrast with the huge title */
   font-weight: 300;
   text-transform: uppercase;
-  letter-spacing: 0.3em;
-  line-height: 1.8;
+  letter-spacing: 0.45em;
+  line-height: 2.2;
   max-width: 280px;
-  margin-bottom: 3rem;
+  margin: 0 auto;
 }
 
-.button {
-  font-family: 'Montserrat', sans-serif;
-  width: 100%;
-  max-width: 260px;
-  padding: 1.2rem;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: #fff;
-  text-transform: uppercase;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.4em;
-  border-radius: 2px;
-  transition: all 0.3s ease;
+.footerContainer {
+  position: absolute;
+  bottom: 2rem;
+  z-index: 10;
+  opacity: 0.3;
+  animation: fadeOut 0.5s ease-in forwards 4s;
 }
 
-.button:active {
-  background: #fff;
-  color: #000;
-  transform: scale(0.95);
-}
-
-@keyframes fadeInMobile {
-  from { opacity: 0; transform: translateY(15px); }
+/* Shared Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes floatMobile {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-10px); }
 }
