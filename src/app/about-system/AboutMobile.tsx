@@ -21,21 +21,13 @@ export default function AboutMobile() {
         </Link>
       </div>
 
-      {/* 3. Centered Info Content */}
+      {/* 3. Single Centered Vision Section */}
       <div className={styles.mobileInfoStack}>
         <div className={styles.mobileSection}>
           <h3 className={styles.mobileSectionTitle}>The Vision</h3>
           <p className={styles.mobileDescription}>
             Novelarc is a digital gateway designed for the modern homeowner. 
             We translate architectural blueprints into immersive 1:1 digital environments.
-          </p>
-        </div>
-
-        <div className={styles.mobileSection}>
-          <h3 className={styles.mobileSectionTitle}>The Selection</h3>
-          <p className={styles.mobileDescription}>
-            Browse our curated collection of Philippine residential designs. 
-            Pick your space, then enter the world.
           </p>
         </div>
       </div>
