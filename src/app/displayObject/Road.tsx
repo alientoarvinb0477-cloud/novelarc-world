@@ -11,32 +11,36 @@ export default function Road({ position = [0, 1.0, 0] as [number, number, number
         {/* Asphalt Surface */}
         <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[roadWidth, length]} />
-          <MeshReflectorMaterial
-            blur={[400, 100]}
-            resolution={512}
-            mixBlur={1}
-            mixStrength={10}
-            roughness={1}
-            color="#1a1a1a"
-            metalness={0.2}
-            mirror={0.15}
+          <meshStandardMaterial color="#1a1a1a" roughness={0.8} />
+        </mesh>
+
+        {/* Center Yellow Line */}
+        <mesh position={[0, 0.02, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.2, length]} />
+          <meshStandardMaterial 
+            color="#ffcc00" 
+            polygonOffset 
+            polygonOffsetFactor={-4} // Forces this to render ON TOP
           />
         </mesh>
 
-        {/* Center Yellow Line - Elevated slightly more to stop "damage" look */}
-        <mesh position={[0, 0.05, 0]}>
-          <boxGeometry args={[0.2, 0.01, length]} />
-          <meshStandardMaterial color="#ffcc00" emissive="#ffcc00" emissiveIntensity={0.2} />
+        {/* White Boundary Lines */}
+        <mesh position={[-(roadWidth / 2 - 0.5), 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.2, length]} />
+          <meshStandardMaterial 
+            color="white" 
+            polygonOffset 
+            polygonOffsetFactor={-4} 
+          />
         </mesh>
-
-        {/* White Boundary Lines - Elevated to 0.04 to prevent flickering */}
-        <mesh position={[-(roadWidth / 2 - 0.5), 0.04, 0]}>
-          <boxGeometry args={[0.2, 0.01, length]} />
-          <meshStandardMaterial color="white" opacity={0.8} transparent />
-        </mesh>
-        <mesh position={[(roadWidth / 2 - 0.5), 0.04, 0]}>
-          <boxGeometry args={[0.2, 0.01, length]} />
-          <meshStandardMaterial color="white" opacity={0.8} transparent />
+        
+        <mesh position={[(roadWidth / 2 - 0.5), 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[0.2, length]} />
+          <meshStandardMaterial 
+            color="white" 
+            polygonOffset 
+            polygonOffsetFactor={-4} 
+          />
         </mesh>
       </RigidBody>
     </group>
