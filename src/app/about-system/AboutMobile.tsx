@@ -1,54 +1,18 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
-// Change this line to import the new mobile-specific CSS
 import styles from "../design/aboutMobile.module.css"; 
 
 export default function AboutMobile() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Logic to add the visible class from our NEW css file
-            entry.target.classList.add(styles.visible);
-          }
-        });
-      },
-      { threshold: 0.15 }
-    );
-
-    const sections = document.querySelectorAll(`.${styles.mobileSection}`);
-    sections.forEach((section) => observer.observe(section));
-
-    window.addEventListener("scroll", handleScroll);
-    
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   return (
     <main className={styles.mobileContainer}>
-      <div 
-        className={styles.progressBar} 
-        style={{ width: `${scrollProgress}%` }} 
-      />
-
+      {/* 1. Header Area */}
       <h1 className={styles.mobileTitle}>
         Visualizing the future of <br/> Philippine Living.
       </h1>
 
+      {/* 2. Button Area */}
       <div className={styles.buttonWrapper}>
         <Link href="/world/main-world" className="w-full">
           <button className={styles.mobileEnterButton}>
@@ -57,6 +21,7 @@ export default function AboutMobile() {
         </Link>
       </div>
 
+      {/* 3. Centered Info Content */}
       <div className={styles.mobileInfoStack}>
         <div className={styles.mobileSection}>
           <h3 className={styles.mobileSectionTitle}>The Vision</h3>
@@ -75,6 +40,7 @@ export default function AboutMobile() {
         </div>
       </div>
 
+      {/* 4. Footer */}
       <footer className={styles.mobileFooter}>
         ARC-V1 • 2026
       </footer>
