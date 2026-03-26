@@ -9,7 +9,7 @@ export default function AboutSystemPage() {
     <main className={styles.container}>
       <div className={styles.contentWrapper}>
         
-        {/* 1. POSITIONED AT TOP 20% */}
+        {/* 1. SEO OPTIMIZED MAIN TITLE */}
         <h1 className={styles.mainTitle}>
           Visualizing the future of <br/> Philippine Living.
         </h1>
@@ -45,6 +45,7 @@ export default function AboutSystemPage() {
 
       </div>
       
+      {/* Subtle Footer */}
       <footer className={styles.footer}>
         <div className="text-[7px] font-bold uppercase tracking-[1em] text-black">
           ARC-V1 • 2026
