@@ -10,6 +10,7 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
+import LightPost from "../../displayObject/LightPost"; // Ensure this is imported
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
@@ -46,8 +47,6 @@ export default function MainWorldPage() {
   const [isMounted, setIsMounted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
   
-  // ✅ 1. Reduced MapSize: 450,000 was causing the "Black Sky" bug. 
-  // 20,000 is still huge but much more stable for the GPU.
   const mapSize = 20000; 
 
   useEffect(() => {
@@ -68,19 +67,13 @@ export default function MainWorldPage() {
       <KeyboardListener />
       <LoadingScreen />
 
-      <StartOverlay 
-        show={isMobile && !hasStarted} 
-        onStart={handleStart} 
-      />
-
+      <StartOverlay show={isMobile && !hasStarted} onStart={handleStart} />
       <MobileControls />
 
       <Canvas shadows>
         <Suspense fallback={null}>
-          {/* ✅ 2. Fixed Camera: Adjusted 'far' to match the new MapSize */}
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
-          {/* ✅ 3. Fixed Sky: Set distance to mapSize for a clean horizon */}
           <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={2} />
           
           <Environment preset="city" background={false} />
@@ -90,10 +83,24 @@ export default function MainWorldPage() {
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
-            {/* ✅ 4. The Road: Lifted to y=0.5 to prevent it from sinking into the floor */}
-            <Road position={[0, 0.5, -100]} length={1000} />
+            {/* Road set to y=0.5 as per your working basis */}
+            <Road position={[0, 0.5, -100]} length={2000} />
 
-            {/* ✅ Billboard */}
+            {/* ✅ Alternating Light Posts Logic ✅ */}
+            {[...Array(20)].map((_, i) => {
+              const isEven = i % 2 === 0;
+              const xPos = isEven ? -8.5 : 8.5; // Toggle Left/Right side
+              const rotationY = isEven ? 0 : Math.PI; // Flip 180 deg for Right side
+
+              return (
+                <LightPost 
+                  key={i} 
+                  position={[xPos, 0.5, -i * 60]} 
+                  rotation={[0, rotationY, 0]} 
+                />
+              );
+            })}
+
             <Billboard 
               position={[8, 0, -20]} 
               rotation={[0, -Math.PI / 6, 0]} 
@@ -103,7 +110,6 @@ export default function MainWorldPage() {
             
             <Player />
 
-            {/* World Borders based on new MapSize */}
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, -mapSize]} />
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, mapSize]} />
