@@ -80,11 +80,11 @@ export default function MainWorldPage() {
           {/* ✅ 2. Fixed Camera: Adjusted 'far' to match the new MapSize */}
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
-{/* ADD FOG HERE: [Color, Near, Far] */}
-    <fog attach="fog" args={["#87ceeb", 10, 2000]} />
+{/* ✅ FOG ADDS REALISM [Color, Near, Far] ✅ */}
+    <fog attach="fog" args={["#87ceeb", 10, 1500]} />
     
-    {/* Change Sky to match fog color for a seamless horizon */}
-    <Sky distance={mapSize} sunPosition={[100, 20, 100]} />
+    {/* Sky component to match */}
+    <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.01} />
           
           <Environment preset="city" background={false} />
           <ambientLight intensity={0.5} />
