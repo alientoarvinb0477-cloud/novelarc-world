@@ -91,7 +91,7 @@ export default function MainWorldPage() {
             <WorldFloor />
 
             {/* ✅ 4. The Road: Lifted to y=0.5 to prevent it from sinking into the floor */}
-            <Road position={[0, 0.5, -100]} length={1000} />
+            <Road position={[0, 1.0, -100]} length={1000} />
 
             {/* ✅ Billboard */}
             <Billboard 
