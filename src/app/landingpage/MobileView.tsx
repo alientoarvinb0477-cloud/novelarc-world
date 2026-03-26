@@ -22,7 +22,7 @@ export default function MobileView() {
       {/* SEO Optimized Header Section */}
       <section className={styles.content}>
         <h1 className={styles.title}>
-          ARCHITECTURE<span className={styles.titleItalic}>ARC</span>
+         Architecture<span className={styles.titleItalic}>Design</span>
         </h1>
         
         <h2 className={styles.subtitle}>
