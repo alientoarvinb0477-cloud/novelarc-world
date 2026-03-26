@@ -10,8 +10,9 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
-import LightPost from "../../displayObject/LightPost"; // ✅ New Import
+import LightPost from "../../displayObject/LightPost";
 import StartOverlay from "../../../components/world/StartOverlay";
+import * as THREE from "three";
 
 function WorldFloor() {
   const { scene } = useGLTF("/floor.glb");
@@ -69,30 +70,43 @@ export default function MainWorldPage() {
       <StartOverlay show={isMobile && !hasStarted} onStart={handleStart} />
       <MobileControls />
 
-      <Canvas shadows>
+      {/* Set shadow type to PCFShadowMap to resolve deprecation warnings */}
+      <Canvas shadows={{ type: THREE.PCFShadowMap }}>
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
           
-          {/* Subtle Sky for better Light Post visibility */}
-          <Sky distance={mapSize} sunPosition={[0, -1, 0]} mieCoefficient={0.01} rayleigh={0.5} />
-          <fog attach="fog" args={["#111", 10, 500]} />
+          {/* Sky adjusted for visibility - Fixed "Black Sky" bug */}
+          <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={3} />
+          
+          {/* ✅ Fog removed for a smoother platform and to fix gray-out screen ✅ */}
           
           <Environment preset="city" background={false} />
-          <ambientLight intensity={0.2} />
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[10, 20, 10]} intensity={1.5} castShadow />
 
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
             {/* The Main Road */}
-            <Road position={[0, 1.0, -100]} length={2000} roadWidth={15} />
+            <Road position={[0, 1.0, -100]} length={3000} roadWidth={15} />
 
-            {/* ✅ LIGHT POSTS: Spawning 15 posts along the road side ✅ */}
-            {[...Array(15)].map((_, i) => (
-              <LightPost key={i} position={[-8.5, 1.0, -i * 50]} />
-            ))}
+            {/* ✅ FIXED: Alternating Light Posts on both sides ✅ */}
+            {[...Array(25)].map((_, i) => {
+              const isRightSide = i % 2 !== 0;
+              const xPos = isRightSide ? 8.5 : -8.5;
+              const rotY = isRightSide ? Math.PI : 0; // Flip 180° so lamp faces road
+
+              return (
+                <LightPost 
+                  key={i} 
+                  position={[xPos, 1.0, -i * 60]} 
+                  rotation={[0, rotY, 0]} 
+                />
+              );
+            })}
 
             <Billboard 
-              position={[10, 0, -30]} 
+              position={[12, 0, -40]} 
               rotation={[0, -Math.PI / 6, 0]} 
               title="NOVELARC" 
               description="Visualizing the Future"
