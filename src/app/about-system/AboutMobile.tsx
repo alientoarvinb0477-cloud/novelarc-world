@@ -1,30 +1,30 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import styles from "../design/about.module.css";
+// Change this line to import the new mobile-specific CSS
+import styles from "../design/aboutMobile.module.css"; 
 
 export default function AboutMobile() {
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    // 1. SCROLL PROGRESS LOGIC
     const handleScroll = () => {
       const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = (window.scrollY / totalHeight) * 100;
       setScrollProgress(progress);
     };
 
-    // 2. INTERSECTION OBSERVER LOGIC
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // Logic to add the visible class from our NEW css file
             entry.target.classList.add(styles.visible);
           }
         });
       },
-      { threshold: 0.15 } // Slightly higher threshold for a smoother trigger
+      { threshold: 0.15 }
     );
 
     const sections = document.querySelectorAll(`.${styles.mobileSection}`);
@@ -40,7 +40,6 @@ export default function AboutMobile() {
 
   return (
     <main className={styles.mobileContainer}>
-      {/* Scroll Progress Bar */}
       <div 
         className={styles.progressBar} 
         style={{ width: `${scrollProgress}%` }} 
