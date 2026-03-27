@@ -8,7 +8,8 @@ import { RigidBody } from "@react-three/rapier";
  * It should look exactly like this format:
  * https://github.com/USER/REPO/releases/download/v1.0.0/modern_house.glb
  */
-const HOUSE_URL = "https://github.com/alientoarvinb0477-cloud/novelarc-world/releases/download/v1.0.0/modern_house.glb";
+// We add the 'cors-anywhere' prefix to your GitHub link
+const HOUSE_URL = "https://cors-proxy.fringe.zone/https://github.com/alientoarvinb0477-cloud/novelarc-world/releases/download/v1.0.0/modern_house.glb";
 
 // This component shows the download percentage for the 138MB file
 function Loader() {
