@@ -11,7 +11,7 @@ import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
 import LightPost from "../../displayObject/LightPost";
-import House from "../../displayObject/House"; // ✅ 1. Import House
+import House from "../../house/House"; // ✅ This matches your image structure
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
