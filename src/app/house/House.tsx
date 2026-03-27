@@ -1,33 +1,47 @@
 "use client";
 
-import React, { useMemo } from "react";
-import { useGLTF } from "@react-three/drei";
+import React, { useMemo, Suspense } from "react";
+import { useGLTF, Html, useProgress } from "@react-three/drei";
 import { RigidBody } from "@react-three/rapier";
 
-// ✅ Your exact Google Drive Direct Download Link ✅
-const HOUSE_URL = "https://drive.google.com/uc?export=download&id=1kbnmKXstDT2CGKgCgvz4vRQ45AFIcpbd";
+// ✅ Use the Dropbox link with ?raw=1 at the end
+const HOUSE_URL = "https://www.dropbox.com/scl/fi/g5s4xs85hzk8xs0jccoo7/modern_house.glb?raw=1";
 
-export default function House({ position = [0, 0, 0], rotation = [0, 0, 0], scale = 1.5 }: any) {
-  
-  // Load the model from your Google Drive
-  const { scene } = useGLTF(HOUSE_URL);
-
-  // Clone the scene so we can place multiple houses
-  const clonedScene = useMemo(() => scene.clone(), [scene]);
-
+function Loader() {
+  const { progress } = useProgress();
   return (
-    <group position={position} rotation={rotation}>
-      <RigidBody type="fixed" colliders="trimesh">
-        <primitive 
-          object={clonedScene} 
-          scale={scale} 
-          castShadow 
-          receiveShadow 
-        />
-      </RigidBody>
-    </group>
+    <Html center>
+      <div style={{ 
+        color: 'white', background: 'black', padding: '15px', borderRadius: '8px',
+        border: '1px solid #333', textAlign: 'center', width: '220px'
+      }}>
+        <p style={{ marginBottom: '10px' }}>Downloading House (138MB)</p>
+        <div style={{ width: '100%', background: '#222', height: '8px', borderRadius: '4px' }}>
+           <div style={{ width: `${progress}%`, background: '#fb923c', height: '100%', borderRadius: '4px' }} />
+        </div>
+        <p style={{ marginTop: '10px' }}>{Math.round(progress)}%</p>
+      </div>
+    </Html>
   );
 }
 
-// Pre-load the Drive link for faster loading
+function HouseModel(props: any) {
+  const { scene } = useGLTF(HOUSE_URL);
+  const clonedScene = useMemo(() => scene.clone(), [scene]);
+
+  return (
+    <RigidBody type="fixed" colliders="trimesh">
+      <primitive object={clonedScene} {...props} castShadow receiveShadow />
+    </RigidBody>
+  );
+}
+
+export default function House(props: any) {
+  return (
+    <Suspense fallback={<Loader />}>
+      <HouseModel {...props} />
+    </Suspense>
+  );
+}
+
 useGLTF.preload(HOUSE_URL);
