@@ -26,7 +26,7 @@ export default function Player() {
     if (!rb.current) return;
 
     const position = rb.current.translation();
-    camera.position.set(position.x, position.y + 2.5, position.z);
+    camera.position.set(position.x, position.y + 4.5, position.z);
 
     // Calculate movement based on Store state
     frontVector.set(0, 0, Number(backward) - Number(forward));
