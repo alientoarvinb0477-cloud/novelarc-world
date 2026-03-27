@@ -10,7 +10,8 @@ import LoadingScreen from "../../../components/world/LoadingScreen";
 import MobileControls from "../../../components/world/MobileControls";
 import Billboard from "../../displayObject/Billboard";
 import Road from "../../displayObject/Road";
-import LightPost from "../../displayObject/LightPost"; // ✅ Added Import
+import LightPost from "../../displayObject/LightPost";
+import House from "../../displayObject/House"; // ✅ 1. Import House
 import StartOverlay from "../../../components/world/StartOverlay";
 
 function WorldFloor() {
@@ -46,9 +47,6 @@ export default function MainWorldPage() {
   const [isMobile, setIsMobile] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [hasStarted, setHasStarted] = useState(false);
-  
-  // ✅ 1. Reduced MapSize: 450,000 was causing the "Black Sky" bug. 
-  // 20,000 is still huge but much more stable for the GPU.
   const mapSize = 20000; 
 
   useEffect(() => {
@@ -68,20 +66,12 @@ export default function MainWorldPage() {
     <div className="w-full h-screen bg-black relative overflow-hidden touch-none">
       <KeyboardListener />
       <LoadingScreen />
-
-      <StartOverlay 
-        show={isMobile && !hasStarted} 
-        onStart={handleStart} 
-      />
-
+      <StartOverlay show={isMobile && !hasStarted} onStart={handleStart} />
       <MobileControls />
 
       <Canvas shadows>
         <Suspense fallback={null}>
-          {/* ✅ 2. Fixed Camera: Adjusted 'far' to match the new MapSize */}
           <PerspectiveCamera makeDefault position={[0, 5, 10]} fov={50} far={mapSize * 2} />
-          
-          {/* ✅ 3. Fixed Sky: Set distance to mapSize for a clean horizon */}
           <Sky distance={mapSize} sunPosition={[100, 20, 100]} mieCoefficient={0.005} rayleigh={2} />
           
           <Environment preset="city" background={false} />
@@ -91,25 +81,30 @@ export default function MainWorldPage() {
           <Physics gravity={[0, -9.81, 0]}>
             <WorldFloor />
 
-{/* Road lifted to y=1.2 as requested */}
+            {/* Road at y=1.2 */}
             <Road position={[0, 1.2, -100]} length={1000} />
 
-            {/* ✅ ADDED: Alternating Light Posts along the road side ✅ */}
+            {/* ✅ 2. Single House Placement ✅ */}
+            <House 
+              position={[-15, 1.2, -60]} 
+              rotation={[0, Math.PI / 2, 0]} 
+              scale={2.5} 
+            />
+
+            {/* Light Posts Loop */}
             {[...Array(20)].map((_, i) => {
               const isRightSide = i % 2 !== 0;
-              const xPos = isRightSide ? 8.5 : -8.5; // Positions them on left/right edges
-              const rotY = isRightSide ? Math.PI : 0; // Rotates right side 180° to face road
-
+              const xPos = isRightSide ? 8.5 : -8.5;
+              const rotY = isRightSide ? Math.PI : 0;
               return (
                 <LightPost 
                   key={i} 
-                  position={[xPos, 1.2, -i * 60]} // y=1.2 matches road height
+                  position={[xPos, 1.2, -i * 60]} 
                   rotation={[0, rotY, 0]} 
                 />
               );
             })}
 
-            {/* ✅ Billboard */}
             <Billboard 
               position={[8, 0, -20]} 
               rotation={[0, -Math.PI / 6, 0]} 
@@ -119,7 +114,6 @@ export default function MainWorldPage() {
             
             <Player />
 
-            {/* World Borders based on new MapSize */}
             <RigidBody type="fixed">
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, -mapSize]} />
               <CuboidCollider args={[mapSize, 100, 10]} position={[0, 50, mapSize]} />
