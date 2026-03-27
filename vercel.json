@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/assets/house.glb",
+      "destination": "https://github.com/alientoarvinb0477-cloud/novelarc-world/releases/download/v1.0.0/modern_house.glb"
+    }
+  ]
+}
